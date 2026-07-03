@@ -59,20 +59,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .brand{display:flex;align-items:center;gap:12px;}
 
 .brand-logo{
-  width:44px;height:44px;border-radius:10px;
+  width:44px;height:44px;border-radius:50%;
   overflow:hidden;
-  background:#fff;
+  background: radial-gradient(circle at 35% 30%, #16233f, #0a1222);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+  box-shadow:
+    0 0 0 2px rgba(212,175,90,0.55),
+    0 0 0 4px rgba(212,175,90,0.10),
+    0 2px 8px rgba(0,0,0,0.3);
   flex-shrink:0;
 }
-.brand-logo img{width:44px;height:44px;object-fit:cover;border-radius:10px;}
+.brand-logo img{width:44px;height:44px;object-fit:cover;border-radius:50%;}
 
 .brand-name{
   font-family:'Barlow Condensed',sans-serif;
   font-size:26px;font-weight:800;
-  color:#fff;letter-spacing:2px;
+  letter-spacing:2px;
   text-transform:uppercase;
+  background:linear-gradient(135deg,#f4e4b8 0%,#d4af5a 45%,#b8892f 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
 }
 .brand-tag{font-size:10px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:2px;font-weight:500;margin-top:-2px;}
 
@@ -1739,13 +1744,15 @@ tbody tr:hover{background:#f8fafc;}
 /* ── Card container ── */
 .auth-card {
   position:relative; z-index:1;
-  background:#ffffff;
+  background: linear-gradient(175deg, #0e1b30 0%, #0b1526 55%, #0a1222 100%);
   border-radius:24px;
+  border:1px solid rgba(212,175,90,0.22);
   width:94%; max-width:440px;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.08),
-    0 24px 48px rgba(0,0,0,0.5),
-    0 8px 16px rgba(0,0,0,0.3);
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 0 40px rgba(212,175,90,0.05),
+    0 24px 48px rgba(0,0,0,0.55),
+    0 8px 16px rgba(0,0,0,0.35);
   overflow:hidden;
   animation: authCardIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
 }
@@ -1756,8 +1763,7 @@ tbody tr:hover{background:#f8fafc;}
 
 /* ── Header ── */
 .auth-header {
-  background: linear-gradient(145deg, #0a1628 0%, #0c2461 45%, #0052cc 100%);
-  padding: 32px 32px 28px;
+  padding: 30px 32px 26px;
   text-align:center;
   position:relative;
   overflow:hidden;
@@ -1766,56 +1772,49 @@ tbody tr:hover{background:#f8fafc;}
   content:'';
   position:absolute; top:0;left:0;right:0;bottom:0;
   background:
-    radial-gradient(circle at 80% 20%, rgba(0,184,217,0.2) 0%, transparent 50%),
-    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.04) 0%, transparent 40%);
+    radial-gradient(circle at 50% 0%, rgba(212,175,90,0.10) 0%, transparent 55%);
+  pointer-events:none;
 }
 .auth-logo {
-  display:flex; align-items:center; justify-content:center;
-  gap:14px; margin-bottom:10px; position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; margin-bottom:6px; position:relative;
 }
 .auth-logo-img-wrap {
-  width:52px; height:52px; border-radius:14px;
-  background:#fff;
+  position:relative;
+  width:88px; height:88px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #16233f, #0a1222);
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 16px rgba(0,0,0,0.3), 0 0 0 2px rgba(255,255,255,0.15);
+  box-shadow:
+    0 0 0 2px rgba(212,175,90,0.55),
+    0 0 0 6px rgba(212,175,90,0.10),
+    0 8px 24px rgba(0,0,0,0.4);
   overflow:hidden; flex-shrink:0;
+  font-size:36px;
 }
-.auth-logo-img-wrap img { width:52px;height:52px;object-fit:cover;border-radius:14px; }
-.auth-logo-text { text-align:left; }
+.auth-logo-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.auth-logo-img-wrap img { position:relative; z-index:1; width:100%;height:100%;object-fit:cover;border-radius:50%; }
+.auth-logo-text { text-align:center; }
 .auth-logo-name {
-  font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:28px; font-weight:800; color:#fff;
-  letter-spacing:3px; text-transform:uppercase; line-height:1;
+  font-family:'Barlow Condensed',Georgia,serif;
+  font-size:30px; font-weight:800;
+  letter-spacing:2px; line-height:1.1;
+  background:linear-gradient(135deg,#f4e4b8 0%,#d4af5a 45%,#b8892f 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
 }
 .auth-logo-tag {
-  font-size:9px; color:rgba(255,255,255,0.45);
+  font-size:10.5px; color:#7c93b8;
   text-transform:uppercase; letter-spacing:2.5px;
-  font-weight:600; margin-top:3px;
+  font-weight:700; margin-top:5px;
 }
-.auth-subtitle {
-  font-size:11.5px; color:rgba(255,255,255,0.5);
-  letter-spacing:1px; font-weight:500; position:relative;
-}
-.auth-subtitle span {
-  display:inline-block;
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:20px; padding:4px 14px;
-}
+.auth-subtitle { display:none; }
 
 /* ── Tabs ── */
-.auth-tabs {
-  display:flex;
-  background:#f8fafc;
-  border-bottom:1px solid #e8eef5;
-  padding:6px 6px 0;
-  gap:3px;
-}
+.auth-tabs { display:none; }
 .auth-tab {
   flex:1; padding:10px 8px;
   font-size:12px; font-weight:700;
   border:none; border-radius:10px 10px 0 0;
-  cursor:pointer; color:#64748b;
+  cursor:pointer; color:#7c93b8;
   background:transparent;
   transition:all 0.2s cubic-bezier(0.4,0,0.2,1);
   letter-spacing:0.3px;
@@ -1823,33 +1822,32 @@ tbody tr:hover{background:#f8fafc;}
   font-family:'Plus Jakarta Sans',sans-serif;
 }
 .auth-tab:hover:not(.active) {
-  background:rgba(0,82,204,0.06);
-  color:#0052cc;
+  background:rgba(212,175,90,0.08);
+  color:#d4af5a;
 }
 .auth-tab.active {
-  background:#ffffff;
-  color:#0052cc;
+  background:rgba(255,255,255,0.04);
+  color:#d4af5a;
   font-weight:800;
-  box-shadow:0 -1px 0 0 #e8eef5 inset, 1px 0 0 0 #e8eef5, -1px 0 0 0 #e8eef5;
 }
 .auth-tab.active::after {
   content:'';
   position:absolute; bottom:0; left:12px; right:12px;
   height:2.5px; border-radius:2px 2px 0 0;
-  background:linear-gradient(90deg,#0052cc,#0ea5e9);
+  background:linear-gradient(90deg,#d4af5a,#0052cc);
 }
 
 /* ── Body ── */
-.auth-body { padding:26px 28px 24px; }
+.auth-body { padding:12px 30px 28px; }
 
 /* ── Device notice ── */
 #authDeviceNotice {
-  background:linear-gradient(135deg,#fffbeb,#fef3c7);
-  border:1px solid #fde68a;
+  background:linear-gradient(135deg,rgba(253,230,138,0.12),rgba(254,243,199,0.06));
+  border:1px solid rgba(253,230,138,0.3);
   border-radius:12px;
   padding:13px 15px;
   margin-bottom:16px;
-  font-size:12px; color:#92400e; line-height:1.6;
+  font-size:12px; color:#fcd34d; line-height:1.6;
   display:flex; gap:10px; align-items:flex-start;
 }
 
@@ -1857,7 +1855,7 @@ tbody tr:hover{background:#f8fafc;}
 .auth-fg { margin-bottom:16px; }
 .auth-fg label {
   display:flex; align-items:center; gap:6px;
-  font-size:11px; font-weight:700; color:#374151;
+  font-size:11px; font-weight:700; color:#93a8c9;
   text-transform:uppercase; letter-spacing:.8px;
   margin-bottom:7px; font-family:'Plus Jakarta Sans',sans-serif;
 }
@@ -1874,26 +1872,30 @@ tbody tr:hover{background:#f8fafc;}
   position:absolute; left:14px; top:50%;
   transform:translateY(-50%);
   font-size:15px; pointer-events:none; z-index:1;
+  opacity:0.7;
 }
 .auth-input-wrap input,
 .auth-fg input,
 .auth-fg select {
-  width:100%; padding:11px 14px;
-  border:1.5px solid #e2e8f0; border-radius:12px;
+  width:100%; padding:12px 14px;
+  border:1.5px solid rgba(255,255,255,0.10); border-radius:12px;
   font-size:13.5px; font-family:'Plus Jakarta Sans',sans-serif;
-  color:#0f172a; background:#fff;
+  color:#e8eef8; background:rgba(255,255,255,0.04);
   box-sizing:border-box; outline:none;
   transition:all 0.2s;
-  box-shadow:0 1px 3px rgba(0,0,0,0.04);
 }
+.auth-input-wrap input::placeholder,
+.auth-fg input::placeholder { color:#5b7092; }
 .auth-input-wrap input { padding-left:40px; }
 .auth-input-wrap input:focus,
 .auth-fg input:focus,
 .auth-fg select:focus {
-  border-color:#0052cc;
-  box-shadow:0 0 0 3px rgba(0,82,204,0.1);
+  border-color:#3b82f6;
+  background:rgba(59,130,246,0.06);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
 }
 .auth-fg select { cursor:pointer; }
+.auth-fg select option { background:#0e1b30; color:#e8eef8; }
 
 /* Password wrap */
 .auth-pw-wrap { position:relative; }
@@ -1903,24 +1905,37 @@ tbody tr:hover{background:#f8fafc;}
   position:absolute; right:12px; top:50%;
   transform:translateY(-50%);
   background:none; border:none; cursor:pointer;
-  font-size:16px; color:#94a3b8;
+  font-size:16px; color:#5b7092;
   width:30px; height:30px;
   display:flex;align-items:center;justify-content:center;
   border-radius:8px; transition:background 0.15s;
 }
-.auth-pw-eye:hover { background:rgba(0,82,204,0.08); }
+.auth-pw-eye:hover { background:rgba(255,255,255,0.06); }
 
 /* Forgot password link */
 .auth-forgot {
-  text-align:right; margin-top:-8px; margin-bottom:16px;
+  text-align:center; margin-top:0; margin-bottom:16px;
 }
 .auth-forgot a {
-  font-size:11.5px; font-weight:600; color:#0052cc;
+  font-size:12px; font-weight:600; color:#5b9bff;
   text-decoration:none; letter-spacing:0.2px;
   transition:color 0.15s; cursor:pointer;
   font-family:'Plus Jakarta Sans',sans-serif;
+  display:inline-flex; align-items:center; gap:5px;
 }
-.auth-forgot a:hover { color:#003d99; text-decoration:underline; }
+.auth-forgot a::before { content:'🔑'; font-size:12px; }
+.auth-forgot a:hover { color:#8cb8ff; text-decoration:underline; }
+
+/* Protected access footer note */
+.auth-protected-note {
+  display:flex; align-items:flex-start; gap:9px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px; padding:12px 14px;
+  font-size:11.5px; color:#7c93b8; line-height:1.55;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.auth-protected-note .apn-ico { font-size:14px; flex-shrink:0; }
 
 /* Remember me */
 .auth-remember {
@@ -1933,7 +1948,7 @@ tbody tr:hover{background:#f8fafc;}
   border-radius:4px;
 }
 .auth-remember label {
-  font-size:12px; color:#64748b; cursor:pointer;
+  font-size:12px; color:#7c93b8; cursor:pointer;
   font-family:'Plus Jakarta Sans',sans-serif;
   font-weight:500; margin:0; text-transform:none; letter-spacing:0;
 }
@@ -1997,18 +2012,18 @@ tbody tr:hover{background:#f8fafc;}
 
 /* ── Messages ── */
 .auth-err {
-  background:linear-gradient(135deg,#fef2f2,#fff5f5);
-  border:1px solid #fecaca; border-radius:10px;
-  padding:10px 14px; font-size:12.5px; color:#dc2626;
+  background:linear-gradient(135deg,rgba(220,38,38,0.14),rgba(220,38,38,0.06));
+  border:1px solid rgba(248,113,113,0.35); border-radius:10px;
+  padding:10px 14px; font-size:12.5px; color:#fca5a5;
   margin-bottom:14px; display:none;
   font-family:'Plus Jakarta Sans',sans-serif;
   font-weight:500; line-height:1.5;
 }
 .auth-err::before { content:'⚠ '; }
 .auth-ok {
-  background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
-  border:1px solid #86efac; border-radius:10px;
-  padding:10px 14px; font-size:12.5px; color:#15803d;
+  background:linear-gradient(135deg,rgba(16,185,129,0.14),rgba(16,185,129,0.06));
+  border:1px solid rgba(52,211,153,0.35); border-radius:10px;
+  padding:10px 14px; font-size:12.5px; color:#6ee7b7;
   margin-bottom:14px; display:none;
   font-family:'Plus Jakarta Sans',sans-serif;
   font-weight:500; line-height:1.5;
@@ -2035,27 +2050,27 @@ tbody tr:hover{background:#f8fafc;}
 
 /* ── Recover steps ── */
 .auth-step-hint {
-  background:linear-gradient(135deg,#f0f7ff,#e0f2fe);
-  border:1px solid #bfdbfe; border-radius:12px;
-  padding:12px 15px; font-size:12px; color:#1e40af;
+  background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(14,165,233,0.06));
+  border:1px solid rgba(96,165,250,0.3); border-radius:12px;
+  padding:12px 15px; font-size:12px; color:#93c5fd;
   margin-bottom:16px; line-height:1.6;
   font-family:'Plus Jakarta Sans',sans-serif;
 }
 #recPreguntaLabel {
-  padding:11px 14px; background:#f8fafc;
-  border-radius:12px; font-size:13px; color:#374151;
-  border:1.5px solid #e2e8f0;
+  padding:11px 14px; background:rgba(255,255,255,0.04);
+  border-radius:12px; font-size:13px; color:#e8eef8;
+  border:1.5px solid rgba(255,255,255,0.10);
   font-family:'Plus Jakarta Sans',sans-serif;
 }
 
 /* ── Footer branding ── */
 .auth-footer {
   text-align:center; padding:0 28px 20px;
-  font-size:10.5px; color:#94a3b8;
+  font-size:10.5px; color:#5b7092;
   font-family:'Plus Jakarta Sans',sans-serif;
   letter-spacing:0.3px;
 }
-.auth-footer strong { color:#64748b; }
+.auth-footer strong { color:#93a8c9; }
 
 /* ── Monkey bounce animation ── */
 @keyframes monkeyBounce {
@@ -2115,11 +2130,45 @@ tbody tr:hover{background:#f8fafc;}
   .auth-body { padding:20px 20px 16px; }
 }
 /* ── TOPBAR USER CHIP ── */
-.user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 12px 5px 7px;cursor:pointer;transition:.15s;}
+.user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 10px 5px 7px;cursor:pointer;transition:.15s;position:relative;}
 .user-chip:hover{background:rgba(255,255,255,0.18);}
 .user-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#818cf8);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
 .user-chip-name{font-size:12px;font-weight:700;color:#fff;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .user-chip-plan{font-size:9px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.8px;}
+.user-chip-chev{font-size:9px;color:rgba(255,255,255,0.55);margin-left:2px;transition:transform 0.2s;flex-shrink:0;}
+.user-chip.open .user-chip-chev{transform:rotate(180deg);}
+
+/* ── Menú desplegable de usuario ── */
+.user-menu{
+  position:absolute; top:calc(100% + 10px); right:0;
+  width:290px;
+  background:linear-gradient(175deg,#0e1b30 0%,#0b1526 60%,#0a1222 100%);
+  border:1px solid rgba(212,175,90,0.22);
+  border-radius:16px;
+  box-shadow:0 20px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  z-index:9000;
+  display:none;
+  overflow:hidden;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  animation:userMenuIn 0.16s cubic-bezier(0.16,1,0.3,1) both;
+}
+.user-menu.open{display:block;}
+@keyframes userMenuIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.um-head{padding:18px 18px 16px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,0.07);}
+.um-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#818cf8);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 0 2px rgba(212,175,90,0.4);}
+.um-head-info{min-width:0;}
+.um-head-name{font-size:13.5px;font-weight:800;color:#e8eef8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.um-head-email{font-size:11px;color:#7c93b8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.um-head-rol{display:inline-block;margin-top:7px;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;}
+.um-section{padding:8px 8px;}
+.um-section + .um-section{border-top:1px solid rgba(255,255,255,0.07);}
+.um-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#5b7092;padding:8px 10px 4px;}
+.um-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:600;color:#cbd5e1;transition:background 0.12s;}
+.um-item:hover{background:rgba(255,255,255,0.06);}
+.um-item .um-ico{width:16px;text-align:center;font-size:13px;flex-shrink:0;}
+.um-item.danger{color:#fca5a5;}
+.um-item.danger:hover{background:rgba(220,38,38,0.12);}
+.um-item.accent{color:#93c5fd;}
 /* ── PLAN BADGES ── */
 .badge-plan{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
 .badge-plan.gratis{background:#f1f5f9;color:#64748b;}
@@ -2174,11 +2223,12 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     <div class="auth-header">
       <div class="auth-logo">
         <div class="auth-logo-img-wrap">
-          <img id="authLogo" src="" alt="T">
+          <span class="auth-logo-fallback">👟</span>
+          <img id="authLogo" src="" alt="T" style="display:none;" onerror="this.style.display='none'" onload="this.style.display='block'">
         </div>
         <div class="auth-logo-text">
           <div class="auth-logo-name">TENLIO</div>
-          <div class="auth-logo-tag">Sistema de Ventas</div>
+          <div class="auth-logo-tag">Sistema de Ventas de Calzado</div>
         </div>
       </div>
       <div class="auth-subtitle">
@@ -2223,20 +2273,26 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
         </div>
       </div>
 
-      <!-- Forgot + Remember -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;margin-top:-6px;">
+      <!-- Remember -->
+      <div style="margin-bottom:18px;margin-top:-6px;">
         <label class="auth-remember" style="margin:0;">
           <input type="checkbox" id="loginRemember">
-          <span style="font-size:12px;color:#64748b;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;">Recordar sesión</span>
+          <span style="font-size:12px;color:#7c93b8;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;">Recordar sesión</span>
         </label>
-        <div class="auth-forgot">
-          <a onclick="authForgotPassword()">¿Olvidaste tu contraseña?</a>
-        </div>
       </div>
 
       <button class="auth-btn" id="loginBtn" onclick="authLogin()">
-        <span>Ingresar al sistema</span>
+        <span>🔒 Ingresar al sistema</span>
       </button>
+
+      <div class="auth-forgot" style="margin-top:16px;">
+        <a onclick="authForgotPassword()">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <div class="auth-protected-note">
+        <span class="apn-ico">🔒</span>
+        <span>Acceso protegido. Contacta al administrador si olvidaste tu contraseña.</span>
+      </div>
     </div>
 
     <!-- ══ REGISTRO ══ -->
@@ -2414,7 +2470,7 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     </div>
     <div>
       <div class="brand-name">TENLIO</div>
-      <div class="brand-tag">Sistema de Ventas</div>
+      <div class="brand-tag">Sistema de Ventas de Calzado</div>
     </div>
   </div>
   <div class="topbar-kpis">
@@ -2432,18 +2488,43 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <div class="user-chip" onclick="showPanel('usuarios',document.querySelector('.nav-item[data-panel=usuarios]'))" title="Mi cuenta">
+    <div class="user-chip" id="userChip" onclick="toggleUserMenu(event)" title="Mi cuenta">
       <div class="user-avatar" id="topUserAvatar">?</div>
       <div>
         <div class="user-chip-name" id="topUserName">—</div>
         <div class="user-chip-plan" id="topUserPlan">—</div>
       </div>
+      <span class="user-chip-chev">▾</span>
+
+      <div class="user-menu" id="userMenu" onclick="event.stopPropagation()">
+        <div class="um-head">
+          <div class="um-avatar" id="umAvatar">?</div>
+          <div class="um-head-info">
+            <div class="um-head-name" id="umNombre">—</div>
+            <div class="um-head-email" id="umEmail">—</div>
+            <span class="um-head-rol" id="umRolBadge"></span>
+          </div>
+        </div>
+
+        <div class="um-section">
+          <div class="um-label">Mi Cuenta</div>
+          <div class="um-item" onclick="closeUserMenu();abrirModalEditarCuenta();"><span class="um-ico">✏️</span>Editar mi cuenta</div>
+          <div class="um-item" onclick="closeUserMenu();_umRestablecerPw();"><span class="um-ico">🔑</span>Restablecer contraseña</div>
+        </div>
+
+        <div class="um-section" id="umAdminSection" style="display:none;">
+          <div class="um-label">Administración</div>
+          <div class="um-item accent" onclick="closeUserMenu();showPanel('usuarios',document.querySelector('.nav-item[data-panel=usuarios]'));"><span class="um-ico">🔒</span>Gestión de Permisos</div>
+          <div class="um-item accent" onclick="closeUserMenu();abrirModalNuevoUsuario();"><span class="um-ico">➕</span>Crear Usuario</div>
+          <div class="um-item accent" onclick="closeUserMenu();showPanel('configuracion',document.querySelector('.nav-item[data-panel=configuracion]'));"><span class="um-ico">⚙️</span>Configuración</div>
+        </div>
+
+        <div class="um-section">
+          <div class="um-item danger" onclick="closeUserMenu();authLogout();"><span class="um-ico">🚪</span>Cerrar Sesión</div>
+        </div>
+      </div>
     </div>
     <input type="file" id="loadBackupInput" accept=".tenlio,.json" style="display:none;" onchange="cargarDesdeArchivo(this)">
-    <button class="save-btn" onclick="guardarSesion()" id="btnGuardar" title="Descargar respaldo .tenlio (los datos ya se guardan automáticamente en la nube)">
-      <span class="save-pulse"></span>
-      💾 Descargar Respaldo
-    </button>
   </div>
 </header>
 
@@ -2504,6 +2585,7 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     <div class="nav-group-label">Ventas</div>
     <button class="nav-item active" data-label="Dashboard"       onclick="showPanel('dashboard',this)"><span class="ni">🏠</span><span class="nlabel">Dashboard</span></button>
     <button class="nav-item"        data-label="Nueva Venta"     onclick="showPanel('nueva-venta',this)"><span class="ni">➕</span><span class="nlabel">Nueva Venta</span></button>
+    <button class="nav-item"        data-label="Inventario"      onclick="showPanel('inventario',this)"><span class="ni">📦</span><span class="nlabel">Inventario</span><span class="nbadge" id="navInvBajo" style="background:#de350b;display:none;">0</span></button>
     <button class="nav-item"        data-label="Activas"         onclick="showPanel('ventas-activas',this)"><span class="ni">⚡</span><span class="nlabel">Activas</span><span class="nbadge" id="navBadge">0</span></button>
     <button class="nav-item"        data-label="Cartera Vencida" onclick="showPanel('cartera',this)"><span class="ni">🚨</span><span class="nlabel">Cartera Vencida</span><span class="nbadge" id="navCartera" style="background:#ff8b00;display:none;">0</span></button>
     <button class="nav-item"        data-label="Historial"       onclick="showPanel('historial',this)"><span class="ni">✅</span><span class="nlabel">Historial</span></button>
@@ -2593,6 +2675,14 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
           <div class="fg"><label>Teléfono del Cliente</label><input type="text" id="telefonoCliente" placeholder="Ej: 300 123 4567"></div>
           <div class="fg"><label>Vendedor</label><select id="vendedorVenta" style="width:100%;"><option value="">Sin asignar</option></select></div>
           <div class="fg"><label>🎂 Cumpleaños del Cliente</label><input type="date" id="cumpleanosCliente" title="Fecha de nacimiento — para recordatorio de cumpleaños"></div>
+        </div>
+        <div class="g3" style="margin-bottom:0;">
+          <div class="fg" style="grid-column:1/-1;">
+            <label>📦 Seleccionar del Inventario (opcional)</label>
+            <select id="ventaInvSelect" style="width:100%;" onchange="_autoRellenarDesdeInventario(this.value)">
+              <option value="">— Escribir manualmente —</option>
+            </select>
+          </div>
         </div>
         <div class="g3">
           <div class="fg"><label>Fecha Límite de Pago</label><input type="date" id="fechaLimitePago"></div>
@@ -2707,9 +2797,68 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
       </div>
     </div>
 
+    <!-- ════ PANEL: INVENTARIO ════ -->
+    <div id="panel-inventario" class="panel">
+      <div class="page-header">
+        <span class="page-title">📦 Inventario de Calzado</span>
+        <span class="page-badge" id="invBadgeTotal">0 productos</span>
+      </div>
+
+      <!-- KPIs -->
+      <div class="gain-strip" style="margin-bottom:20px;">
+        <div class="gs-item bg1"><div class="gs-label">Referencias</div><div class="gs-val" style="color:var(--primary);" id="inv_kpi_refs">0</div></div>
+        <div class="gs-item bg2"><div class="gs-label">Unidades en stock</div><div class="gs-val" style="color:var(--emerald);" id="inv_kpi_unidades">0</div></div>
+        <div class="gs-item bg3"><div class="gs-label">Valor inventario (costo)</div><div class="gs-val" style="color:var(--amber);" id="inv_kpi_valor">$0</div></div>
+        <div class="gs-item" style="background:#ffebe6;border-color:#fca5a5;"><div class="gs-label">Stock bajo</div><div class="gs-val" style="color:var(--crimson);" id="inv_kpi_bajo">0</div></div>
+      </div>
+
+      <div class="card" id="inv_form_card">
+        <div class="card-head"><h3 id="inv_form_titulo">➕ Agregar Producto al Inventario</h3></div>
+        <input type="hidden" id="inv_edit_id" value="">
+        <div class="g3">
+          <div class="fg"><label>Modelo / Referencia</label><input type="text" id="inv_referencia" placeholder="Ej: Nike Air Max 270"></div>
+          <div class="fg"><label>Marca</label><input type="text" id="inv_marca" placeholder="Ej: Nike"></div>
+          <div class="fg"><label>Talla</label><input type="text" id="inv_talla" placeholder="Ej: 42"></div>
+        </div>
+        <div class="g3">
+          <div class="fg"><label>Color</label><input type="text" id="inv_color" placeholder="Ej: Negro"></div>
+          <div class="fg"><label>Precio Compra (costo)</label><input type="number" id="inv_costo" placeholder="0"></div>
+          <div class="fg"><label>Precio Venta sugerido</label><input type="number" id="inv_precio" placeholder="0"></div>
+        </div>
+        <div class="g2">
+          <div class="fg"><label>Stock actual (pares)</label><input type="number" id="inv_stock" placeholder="0" min="0" value="1"></div>
+          <div class="fg"><label>Stock mínimo (alerta)</label><input type="number" id="inv_stock_min" placeholder="2" min="0" value="2"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn" onclick="guardarProductoInventario()" id="inv_btn_guardar">✅ Guardar Producto</button>
+          <button class="btn-ghost" onclick="limpiarFormularioInventario()">🗑️ Limpiar</button>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <div class="tbl-bar"><h3>Productos en inventario</h3><span class="tbl-count" id="inv_cnt_total">0</span></div>
+        <div class="tbl-search-wrap">
+          <div class="search-criterios-panel">
+            <div class="scp-row">
+              <div class="ss-wrapper">
+                <span class="ss-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+                <input type="text" class="tbl-search" id="inv_buscar" placeholder="Buscar por modelo, marca, color o talla…" oninput="renderInventario()" autocomplete="off">
+                <button class="ss-clear" onclick="document.getElementById('inv_buscar').value='';renderInventario();" title="Limpiar">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Modelo</th><th>Marca</th><th>Talla</th><th>Color</th><th>Costo</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+          <tbody id="inventarioBody"><tr><td colspan="8" class="empty-row"><div class="em-ico">📦</div>No hay productos en el inventario</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- ════ PANEL: VENTAS ACTIVAS ════ -->
     <div id="panel-ventas-activas" class="panel">
       <div class="page-header"><span class="page-title">⚡ Ventas a Crédito Activas</span></div>
+
       <div class="tbl-wrap">
         <div class="tbl-bar"><h3>Registros activos</h3><span class="tbl-count" id="cntActivas">0</span></div>
         <div class="tbl-search-wrap">
@@ -3594,33 +3743,14 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     <div id="panel-usuarios" class="panel">
       <div class="page-header"><span class="page-title">👤 Usuarios del Sistema</span></div>
 
-      <!-- Mi cuenta -->
-      <div class="tbl-wrap" style="margin-bottom:22px;">
-        <div class="tbl-bar"><h3>👤 Mi Cuenta</h3></div>
-        <div style="padding:18px 20px;">
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-bottom:16px;">
-            <div id="myAccountAvatar" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#818cf8);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;"></div>
-            <div>
-              <div style="font-size:18px;font-weight:800;color:#0f172a;" id="myAccountNombre">—</div>
-              <div style="font-size:13px;color:#64748b;margin-top:2px;" id="myAccountEmail">—</div>
-              <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
-                <span id="myAccountRolBadge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;"></span>
-                <span id="myAccountPlanBadge" class="badge-plan"></span>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn" id="btnEditarCuenta" onclick="abrirModalEditarCuenta()" style="font-size:12px;">✏️ Editar mi cuenta</button>
-            <button class="btn-ghost" onclick="authLogout()" style="font-size:12px;color:#dc2626;border-color:#fca5a5;">🚪 Cerrar sesión</button>
-          </div>
-        </div>
-      </div>
-
       <!-- Lista de usuarios registrados -->
       <div class="tbl-wrap">
         <div class="tbl-bar">
           <h3>👥 Todos los Usuarios</h3>
-          <span class="tbl-count" id="cntUsuarios">0</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="tbl-count" id="cntUsuarios">0</span>
+            <button id="btnNuevoUsuario" onclick="abrirModalNuevoUsuario()" class="btn" style="font-size:12px;padding:6px 14px;display:none;">➕ Nuevo Usuario</button>
+          </div>
         </div>
         <div id="usuariosList" style="border-radius:0 0 12px 12px;overflow:hidden;"></div>
       </div>
@@ -3629,6 +3759,42 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     <!-- ════ PANEL: CONFIGURACIÓN ════ -->
     <div id="panel-configuracion" class="panel">
       <div class="page-header"><span class="page-title">⚙️ Configuración del Sistema</span></div>
+
+      <div class="cfg-section">
+        <h3>🏪 Marca de tu Negocio</h3>
+        <p class="desc">Este nombre y logo aparecerán en el menú, y en tus facturas, paz y salvo y estados de cuenta.</p>
+        <div class="g2" style="align-items:flex-end;">
+          <div class="fg"><label>Nombre de tu marca / negocio</label><input type="text" id="cfg_marca_nombre" placeholder="Ej: AZSHOESTORE"></div>
+          <div>
+            <div class="fg" style="margin-bottom:8px;"><label>Logo (imagen cuadrada, ideal PNG)</label><input type="file" id="cfg_marca_logo_file" accept="image/*"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;margin:12px 0 16px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#0e1b30;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 2px #d4af5a,0 0 0 4px rgba(212,175,90,0.25);flex-shrink:0;">
+            <img id="cfg_marca_preview" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+          </div>
+          <span style="font-size:12px;color:var(--muted);">Así se verá tu logo en menús y documentos.</span>
+        </div>
+
+        <div class="g2" style="align-items:flex-end;margin-top:6px;">
+          <div class="fg"><label>Firma digital (imagen PNG con fondo transparente, ideal)</label><input type="file" id="cfg_marca_firma_file" accept="image/*"></div>
+          <div>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div style="width:120px;height:56px;border-radius:8px;background:#f8fafc;border:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                <img id="cfg_firma_preview" src="" style="max-width:100%;max-height:100%;object-fit:contain;display:none;">
+                <span id="cfg_firma_placeholder" style="font-size:10.5px;color:var(--muted);">Sin firma</span>
+              </div>
+              <button class="btn-ghost" type="button" onclick="quitarFirmaNegocio()" style="font-size:11px;padding:6px 12px;">🗑️ Quitar firma</button>
+            </div>
+          </div>
+        </div>
+        <p class="desc" style="margin-top:8px;">Esta firma aparecerá automáticamente en Factura, Paz y Salvo y Estado de Cuenta, en vez de dejar el espacio en blanco para firmar a mano.</p>
+
+        <div class="action-row">
+          <button class="btn" onclick="guardarMarcaNegocio()">💾 Guardar Marca</button>
+          <button class="btn-ghost" onclick="restablecerMarcaNegocio()">↩️ Usar marca TENLIO por defecto</button>
+        </div>
+      </div>
 
       <div class="cfg-section">
         <h3>💼 Gestión de Capital</h3>
@@ -3650,29 +3816,6 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
           <div class="p-card"><div class="fg"><label>Precio de Venta Predeterminado</label><input type="number" id="ventaPredeterminada" placeholder="Ej: 170000"></div></div>
         </div>
         <div class="action-row"><button class="btn-violet" onclick="guardarPreciosPredeterminados()">💾 Guardar Precios</button><button class="btn-ghost" onclick="cargarPreciosPredeterminados()">🔄 Restaurar en Formulario</button></div>
-      </div>
-
-      <!-- ── AVISO MULTI-DISPOSITIVO ──────────────────────────────── -->
-      <div class="cfg-section" style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid #bfdbfe;">
-        <h3 style="color:#1d4ed8;">📱 Cómo usar en otro dispositivo</h3>
-        <p class="desc" style="color:#1e40af;font-size:13px;line-height:1.7;">
-          El sistema guarda los datos <strong>localmente en este navegador</strong>. Para usarlo en otro celular o computador debes:
-        </p>
-        <ol style="padding-left:20px;font-size:13px;color:#374151;line-height:2;margin-top:8px;">
-          <li>👆 Presiona <strong>GUARDAR ARCHIVO</strong> en la barra superior de este dispositivo</li>
-          <li>📂 Copia el archivo <strong>.tenlio</strong> al otro dispositivo (WhatsApp, Drive, correo, USB…)</li>
-          <li>🌐 Abre el sistema TENLIO en ese dispositivo</li>
-          <li>📤 Presiona <strong>ABRIR ARCHIVO GUARDADO</strong> y selecciona el archivo <strong>.tenlio</strong></li>
-          <li>🔑 Inicia sesión con tu correo y contraseña normalmente</li>
-        </ol>
-        <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#713f12;">
-          ⚠️ <strong>Importante:</strong> Tu contraseña personal (<em>Lionel25*</em> u otra que hayas puesto) viaja <strong>dentro</strong> del archivo <code>.tenlio</code>. Si abres el sistema sin cargar ese archivo, el sistema no conocerá tu cuenta y solo funcionará con <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="44213221362921373036257677042329252d286a272b29">[email&#160;protected]</a></code> / <code>tenlio123</code>.
-        </div>
-        <div style="margin-top:12px;">
-          <button class="btn" onclick="guardarSesion()" style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;">
-            💾 Guardar archivo .tenlio AHORA
-          </button>
-        </div>
       </div>
 
       <div class="cfg-section">
@@ -4579,7 +4722,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const fbAuth = firebase.auth();
 const fbDb   = firebase.firestore();
-const FB_DOC = () => fbDb.collection('tenlioVentas').doc(fbAuth.currentUser.uid);
+
+// ── Sesión de empresa/rol resuelta desde 'usuarios_index' (ver _resolverEmpresa) ──
+let EMPRESA_ID   = null;   // UID del dueño/empresa cuyos datos se cargan
+let MI_ROL       = null;   // rol de la persona que inició sesión en ESTA empresa
+let MIS_PERMISOS = null;   // permisos granulares resueltos desde la nube
+let MI_ACTIVO    = true;   // si el dueño desactivó esta cuenta, se bloquea el acceso
+
+const FB_DOC = () => fbDb.collection('tenlioVentas').doc(EMPRESA_ID || fbAuth.currentUser.uid);
 
 let _fbUnsub = null;        // listener en tiempo real activo
 let _fbGuardando = false;   // evita loops al recibir nuestro propio guardado
@@ -4655,17 +4805,78 @@ const PERMISOS_ROL = {
 // ── Helpers de almacenamiento ─────────────────────────────
 function _getUsers()    { try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; } }
 function _saveUsers(u)  { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+
+// ══════════════════════════════════════════════════════════════
+// MULTIEMPRESA — resuelve a qué "empresa" (dueño) pertenece cada
+// cuenta de Firebase Auth que inicia sesión, y con qué rol/permisos.
+// Colección 'usuarios_index/{uid}': { empresaId, rol, permisos, activo }
+// ══════════════════════════════════════════════════════════════
+async function _resolverEmpresa(fbUser) {
+  try {
+    const idxRef  = fbDb.collection('usuarios_index').doc(fbUser.uid);
+    const idxSnap = await idxRef.get();
+    if (idxSnap.exists) {
+      const d = idxSnap.data() || {};
+      EMPRESA_ID   = d.empresaId || fbUser.uid;
+      MI_ROL       = d.rol || 'empleado';
+      MIS_PERMISOS = d.permisos || PERMISOS_ROL[MI_ROL] || {};
+      MI_ACTIVO    = d.activo !== false;
+    } else {
+      // Primera vez que este UID inicia sesión → se asume dueño de su propia empresa
+      EMPRESA_ID   = fbUser.uid;
+      MI_ROL       = 'dueno';
+      MIS_PERMISOS = Object.fromEntries(PERMISOS_DEF.map(p => [p.key, true]));
+      MI_ACTIVO    = true;
+      await idxRef.set({
+        empresaId: EMPRESA_ID, rol: MI_ROL, permisos: MIS_PERMISOS,
+        correo: fbUser.email, creadoPor: fbUser.uid,
+        fechaCreacion: new Date().toISOString(), activo: true,
+      });
+    }
+  } catch (e) {
+    console.warn('No se pudo resolver la empresa, usando cuenta propia como respaldo:', e);
+    EMPRESA_ID = fbUser.uid; MI_ROL = 'dueno';
+    MIS_PERMISOS = Object.fromEntries(PERMISOS_DEF.map(p => [p.key, true]));
+    MI_ACTIVO = true;
+  }
+}
+
+// ── Crea una cuenta nueva de Firebase Auth vía REST, SIN afectar
+//    la sesión actual del dueño (createUserWithEmailAndPassword del
+//    SDK normal reemplazaría la sesión activa; la API REST no). ──
+async function _fbCrearCuentaSinSesion(email, password) {
+  const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + firebaseConfig.apiKey;
+  const res  = await fetch(url, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, returnSecureToken: false }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const msg = (data.error && data.error.message) || 'Error desconocido';
+    if (msg.indexOf('EMAIL_EXISTS') > -1)  throw new Error('Ese correo ya tiene una cuenta registrada.');
+    if (msg.indexOf('WEAK_PASSWORD') > -1) throw new Error('La contraseña debe tener al menos 6 caracteres.');
+    if (msg.indexOf('INVALID_EMAIL') > -1) throw new Error('El correo no es válido.');
+    throw new Error(msg);
+  }
+  return data.localId; // UID del nuevo usuario
+}
 function _getSession()  { try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; } }
 function _saveSession(s){ localStorage.setItem(SESSION_KEY, JSON.stringify(s)); }
 function _hashPw(pw)    { return btoa(unescape(encodeURIComponent('TENLIO$' + pw + '$v1'))); }
 
 // ── Verificación de permiso (usado en todas las acciones protegidas)
 function _tienePermiso(permKey) {
+  // Fuente de verdad: sesión resuelta desde 'usuarios_index' en la nube
+  if (MI_ROL) {
+    if (MI_ROL === 'dueno') return true;
+    return !!(MIS_PERMISOS && MIS_PERMISOS[permKey]);
+  }
+  // Respaldo local (compatibilidad, por si aún no se resolvió la sesión en la nube)
   const sess = _getSession();
   if (!sess) return false;
   const user = _getUsers().find(u => u.id === sess.id);
   if (!user) return false;
-  if (user.rol === 'dueno') return true;  // dueño siempre tiene todo
+  if (user.rol === 'dueno') return true;
   const perms = user.permisos || PERMISOS_ROL[user.rol] || {};
   return !!perms[permKey];
 }
@@ -4945,20 +5156,46 @@ function _rolBadgeHtml(rol) {
 // ── Topbar: chip de usuario ──────────────────────────────
 function _actualizarTopbarUser(user) {
   const inicial = (user.nombre||user.correo||'?').charAt(0).toUpperCase();
-  const planTxt = { gratis:'Plan Gratis', pro:'Plan Pro', premium:'Plan Premium' }[user.plan]||user.plan;
   const el=document.getElementById('topUserAvatar'); if(el) el.textContent=inicial;
   const elN=document.getElementById('topUserName'); if(elN) elN.textContent=user.nombre||user.correo;
   const elP=document.getElementById('topUserPlan'); if(elP) elP.textContent=_rolLabel(user.rol);
 
-  const av=document.getElementById('myAccountAvatar'); if(av) av.textContent=inicial;
-  const nm=document.getElementById('myAccountNombre'); if(nm) nm.textContent=user.nombre||'—';
-  const em=document.getElementById('myAccountEmail');  if(em) em.textContent=user.correo||'—';
-  const rb=document.getElementById('myAccountRolBadge'); if(rb) rb.innerHTML=_rolBadgeHtml(user.rol);
-  const pb=document.getElementById('myAccountPlanBadge'); if(pb){ pb.textContent=planTxt; pb.className='badge-plan '+(user.plan||'gratis'); }
+  // ── Menú desplegable del topbar ──
+  const rDef = ROLES_DEF[user.rol] || { label:user.rol, color:'#64748b', bg:'#f1f5f9' };
+  const uAv = document.getElementById('umAvatar');    if(uAv) uAv.textContent = inicial;
+  const uNm = document.getElementById('umNombre');    if(uNm) uNm.textContent = user.nombre || user.correo || '—';
+  const uEm = document.getElementById('umEmail');     if(uEm) uEm.textContent = user.correo || '—';
+  const uRb = document.getElementById('umRolBadge');
+  if (uRb) { uRb.textContent = rDef.label; uRb.style.background = rDef.bg; uRb.style.color = rDef.color; }
+  const uAdmin = document.getElementById('umAdminSection');
+  if (uAdmin) uAdmin.style.display = (MI_ROL === 'dueno') ? '' : 'none';
+}
 
-  // Mostrar/ocultar "Editar mi cuenta" según rol (solo dueno y admin pueden editarse)
-  const btnEdit = document.getElementById('btnEditarCuenta');
-  if (btnEdit) btnEdit.style.display = ['dueno','admin'].includes(user.rol) ? '' : 'none';
+// ── Menú desplegable de usuario (topbar) ──────────────────
+function toggleUserMenu(e) {
+  if (e) e.stopPropagation();
+  const chip = document.getElementById('userChip');
+  const menu = document.getElementById('userMenu');
+  if (!chip || !menu) return;
+  const willOpen = !menu.classList.contains('open');
+  closeUserMenu();
+  if (willOpen) { chip.classList.add('open'); menu.classList.add('open'); }
+}
+function closeUserMenu() {
+  const chip = document.getElementById('userChip');
+  const menu = document.getElementById('userMenu');
+  if (chip) chip.classList.remove('open');
+  if (menu) menu.classList.remove('open');
+}
+document.addEventListener('click', closeUserMenu);
+
+// ── Restablecer contraseña propia por correo (Firebase) ───
+function _umRestablecerPw() {
+  const email = fbAuth.currentUser && fbAuth.currentUser.email;
+  if (!email) return;
+  fbAuth.sendPasswordResetEmail(email)
+    .then(() => mostrarToast('📧 Te enviamos un correo para restablecer tu contraseña', '#0052cc'))
+    .catch(e => mostrarToast('⚠️ No se pudo enviar el correo: ' + e.message, '#dc2626'));
 }
 
 // ── Panel Usuarios ────────────────────────────────────────
@@ -4969,6 +5206,8 @@ function _actualizarPanelUsuarios() {
   const users = _getUsers();
   const cnt   = document.getElementById('cntUsuarios');
   if(cnt) cnt.textContent = users.length;
+  const btnNuevo = document.getElementById('btnNuevoUsuario');
+  if(btnNuevo) btnNuevo.style.display = esDueno ? '' : 'none';
   const list  = document.getElementById('usuariosList');
   if(!list) return;
   if(!users.length){ list.innerHTML='<div style="padding:20px;text-align:center;color:#94a3b8;">Sin usuarios registrados</div>'; return; }
@@ -5009,6 +5248,10 @@ function cambiarRolUsuario(userId, nuevoRol) {
   user.rol      = nuevoRol;
   user.permisos = JSON.parse(JSON.stringify(PERMISOS_ROL[nuevoRol]||PERMISOS_ROL.empleado));
   _saveUsers(users);
+  guardarDatos();
+  fbDb.collection('usuarios_index').doc(userId)
+    .update({ rol: user.rol, permisos: user.permisos })
+    .catch(e => console.warn('No se pudo sincronizar el rol en la nube:', e));
   _actualizarPanelUsuarios();
   mostrarToast(`✅ Rol actualizado a ${_rolLabel(nuevoRol)}`, '#059669');
 }
@@ -5333,6 +5576,10 @@ function guardarPermisos() {
     user.permisos[p.key] = cb ? cb.checked : false;
   });
   _saveUsers(allUsers);
+  guardarDatos();
+  fbDb.collection('usuarios_index').doc(_permisosUserId)
+    .update({ permisos: user.permisos })
+    .catch(e => console.warn('No se pudo sincronizar los permisos en la nube:', e));
 
   const modal = document.getElementById('dynModalPermisos');
   if (modal) modal.remove();
@@ -5357,10 +5604,236 @@ function eliminarUsuario(userId) {
   }
   const user = allUsers.find(function(u){ return u.id === userId; });
   if (!user) return;
-  if (!confirm('¿Eliminar el usuario ' + (user.nombre || user.correo) + '?\nEsta acción no se puede deshacer.')) return;
+  if (!confirm('¿Quitar el acceso de ' + (user.nombre || user.correo) + '?\n\nSe le revocará el acceso al sistema de inmediato. Su cuenta de acceso queda desactivada (no se puede eliminar por completo desde aquí, solo desde la consola de Firebase).')) return;
+  fbDb.collection('usuarios_index').doc(userId)
+    .update({ activo: false })
+    .catch(e => console.warn('No se pudo revocar el acceso en la nube:', e));
   _saveUsers(allUsers.filter(function(u){ return u.id !== userId; }));
+  guardarDatos();
   _actualizarPanelUsuarios();
   setTimeout(function(){ mostrarToast('🗑 Usuario eliminado', '#64748b'); }, 50);
+}
+
+// ── MODAL: NUEVO USUARIO DEL EQUIPO ───────────────────────────
+// Crea una cuenta real de acceso (Firebase Auth) para un miembro
+// del equipo del dueño, con su propio rol y permisos granulares.
+function abrirModalNuevoUsuario() {
+  if (MI_ROL !== 'dueno') { mostrarToast('🚫 Solo el Dueño puede crear usuarios.', '#dc2626'); return; }
+
+  const rolInicial    = 'empleado';
+  const permsIniciales = PERMISOS_ROL[rolInicial];
+
+  const grupos = [...new Set(PERMISOS_DEF.map(function(p){ return p.grupo; }))];
+  const gruposHtml = grupos.map(function(g) {
+    const items = PERMISOS_DEF.filter(function(p){ return p.grupo === g; });
+    return '<div style="margin-bottom:14px;">' +
+      '<div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;' +
+           'color:#64748b;padding:5px 0;border-bottom:2px solid #f1f5f9;margin-bottom:6px;">' + g + '</div>' +
+      items.map(function(p) {
+        const on = !!permsIniciales[p.key];
+        return '<div style="display:flex;align-items:center;justify-content:space-between;' +
+                    'padding:9px 0;border-bottom:1px solid #f8fafc;">' +
+          '<div>' +
+            '<div style="font-size:13px;font-weight:600;color:#1e293b;">' + p.label + '</div>' +
+            '<div style="font-size:10px;color:#94a3b8;margin-top:1px;">' + p.desc + '</div>' +
+          '</div>' +
+          '<label style="position:relative;width:40px;height:22px;flex-shrink:0;cursor:pointer;">' +
+            '<input type="checkbox" class="nu_perm" data-key="' + p.key + '" ' + (on?'checked':'') +
+              ' style="opacity:0;width:0;height:0;position:absolute;"' +
+              ' onchange="this.nextElementSibling.style.background=this.checked?\'#0052cc\':\'#e2e8f0\';' +
+              'this.nextElementSibling.children[0].style.transform=this.checked?\'translateX(18px)\':\'translateX(0)\'">' +
+            '<span style="position:absolute;inset:0;background:' + (on?'#0052cc':'#e2e8f0') + ';' +
+                  'border-radius:22px;transition:.25s;">' +
+              '<span style="position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;' +
+                    'top:3px;left:3px;transition:.25s;transform:' + (on?'translateX(18px)':'translateX(0)') + ';"></span>' +
+            '</span>' +
+          '</label>' +
+        '</div>';
+      }).join('') +
+    '</div>';
+  }).join('');
+
+  const modalHtml = `
+    <div style="background:#fff;border-radius:18px;width:100%;max-width:480px;
+                box-shadow:0 32px 80px rgba(0,0,0,0.35);overflow:hidden;max-height:90vh;
+                display:flex;flex-direction:column;">
+      <div style="background:linear-gradient(135deg,#0a1628,#0052cc);padding:20px 24px;
+                  display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+        <div style="color:#fff;font-size:17px;font-weight:800;">➕ Nuevo Usuario del Equipo</div>
+        <button onclick="document.getElementById('dynModalNuevoUsuario').remove()"
+          style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;
+                 width:30px;height:30px;border-radius:50%;cursor:pointer;line-height:1;">✕</button>
+      </div>
+      <div style="padding:20px 24px;overflow-y:auto;flex:1;">
+        <div id="_nuErr" style="background:#fff0f0;border:1px solid #fca5a5;border-radius:8px;
+             padding:9px 13px;font-size:12px;color:#dc2626;margin-bottom:14px;display:none;"></div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#374151;
+                        text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">Nombre completo</label>
+          <input id="_nuNombre" type="text" placeholder="Ej: María Torres"
+            style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
+                   font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#374151;
+                        text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">Correo electrónico</label>
+          <input id="_nuCorreo" type="email" placeholder="empleado@correo.com"
+            style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
+                   font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#374151;
+                        text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">Contraseña temporal</label>
+          <div style="display:flex;gap:8px;">
+            <input id="_nuPw" type="text" placeholder="Mínimo 6 caracteres"
+              style="flex:1;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
+                     font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;">
+            <button type="button" onclick="document.getElementById('_nuPw').value=Math.random().toString(36).slice(-4)+Math.random().toString(36).slice(-4).toUpperCase()+'!'+Math.floor(Math.random()*90+10)"
+              style="padding:0 14px;border:1.5px solid #e2e8f0;border-radius:9px;background:#f8fafc;
+                     color:#374151;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">🎲 Generar</button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#374151;
+                        text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">Rol</label>
+          <select id="_nuRol" onchange="_nuAplicarRolDefault(this.value)"
+            style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
+                   font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;cursor:pointer;">
+            ${Object.entries(ROLES_DEF).filter(function(e){return e[0]!=='dueno';}).map(function(e){
+              const k=e[0], v=e[1];
+              return `<option value="${k}" ${k===rolInicial?'selected':''}>${v.label} — ${v.desc}</option>`;
+            }).join('')}
+          </select>
+        </div>
+
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+                    color:#374151;margin-bottom:8px;">Permisos específicos</div>
+        <div id="_nuPermsWrap">${gruposHtml}</div>
+      </div>
+      <div style="padding:16px 24px;border-top:1px solid #f1f5f9;display:flex;gap:10px;
+                  justify-content:flex-end;flex-shrink:0;background:#f8fafc;">
+        <button onclick="document.getElementById('dynModalNuevoUsuario').remove()"
+          style="padding:10px 18px;border:1.5px solid #e2e8f0;border-radius:9px;
+                 background:#fff;color:#374151;font-size:13px;font-weight:600;
+                 cursor:pointer;font-family:inherit;">Cancelar</button>
+        <button id="_nuBtnCrear" onclick="guardarNuevoUsuario()"
+          style="padding:10px 22px;border:none;border-radius:9px;
+                 background:linear-gradient(135deg,#059669,#047857);color:#fff;
+                 font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
+                 box-shadow:0 3px 10px rgba(5,150,105,0.35);">✅ Crear Usuario</button>
+      </div>
+    </div>`;
+
+  _crearOverlay('dynModalNuevoUsuario', modalHtml);
+  const pwEl = document.getElementById('_nuPw');
+  if (pwEl) pwEl.value = Math.random().toString(36).slice(-4)+Math.random().toString(36).slice(-4).toUpperCase()+'!'+Math.floor(Math.random()*90+10);
+}
+
+// Al cambiar el rol en el formulario, precarga los permisos por defecto de ese rol
+function _nuAplicarRolDefault(rol) {
+  const defaults = PERMISOS_ROL[rol] || {};
+  document.querySelectorAll('#_nuPermsWrap .nu_perm').forEach(function(cb) {
+    const key = cb.dataset.key;
+    cb.checked = !!defaults[key];
+    const span = cb.nextElementSibling;
+    if (!span) return;
+    span.style.background = cb.checked ? '#0052cc' : '#e2e8f0';
+    if (span.children[0]) span.children[0].style.transform = cb.checked ? 'translateX(18px)' : 'translateX(0)';
+  });
+}
+
+function _nuError(msg) {
+  const errEl = document.getElementById('_nuErr');
+  if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+}
+
+async function guardarNuevoUsuario() {
+  if (MI_ROL !== 'dueno') { mostrarToast('🚫 Solo el Dueño puede crear usuarios.', '#dc2626'); return; }
+
+  const btn    = document.getElementById('_nuBtnCrear');
+  const nombre = (document.getElementById('_nuNombre').value || '').trim();
+  const correo = (document.getElementById('_nuCorreo').value || '').trim().toLowerCase();
+  const pw     = (document.getElementById('_nuPw').value || '').trim();
+  const rol    = document.getElementById('_nuRol').value;
+
+  const perms = {};
+  document.querySelectorAll('#_nuPermsWrap .nu_perm').forEach(function(cb) { perms[cb.dataset.key] = cb.checked; });
+
+  const errEl = document.getElementById('_nuErr');
+  if (errEl) errEl.style.display = 'none';
+
+  if (!nombre)                          { _nuError('⚠️ Escribe el nombre del empleado.'); return; }
+  if (!correo || !correo.includes('@')) { _nuError('⚠️ Escribe un correo válido.'); return; }
+  if (!pw || pw.length < 6)             { _nuError('⚠️ La contraseña debe tener al menos 6 caracteres.'); return; }
+  if (_getUsers().some(function(u){ return u.correo === correo; })) { _nuError('⚠️ Ya existe un usuario con ese correo en tu equipo.'); return; }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Creando cuenta...'; }
+
+  try {
+    // 1) Crear la cuenta real de acceso (Firebase Auth) sin cerrar tu sesión
+    const newUid = await _fbCrearCuentaSinSesion(correo, pw);
+
+    // 2) Vincular esa cuenta a TU empresa, con su rol y permisos
+    await fbDb.collection('usuarios_index').doc(newUid).set({
+      empresaId: EMPRESA_ID, rol: rol, permisos: perms, correo: correo,
+      creadoPor: fbAuth.currentUser.uid, fechaCreacion: new Date().toISOString(), activo: true,
+    });
+
+    // 3) Añadirlo a la lista local del equipo (se sincroniza con tu documento de datos)
+    const users = _getUsers();
+    users.push({
+      id: newUid, nombre: nombre, correo: correo, empresa: 'TENLIO',
+      rol: rol, permisos: perms, plan: 'premium',
+      createdAt: new Date().toISOString(), ultimoLogin: null,
+    });
+    _saveUsers(users);
+    guardarDatos();
+    _actualizarPanelUsuarios();
+
+    const modal = document.getElementById('dynModalNuevoUsuario');
+    if (modal) modal.remove();
+
+    _mostrarCredencialesCreadas(nombre, correo, pw);
+  } catch (e) {
+    _nuError('❌ ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = '✅ Crear Usuario'; }
+  }
+}
+
+// ── MODAL: mostrar credenciales para compartir (WhatsApp / copiar) ──
+function _mostrarCredencialesCreadas(nombre, correo, pw) {
+  const link  = location.origin + location.pathname;
+  const texto = `Hola ${nombre}, ya tienes acceso a TENLIO 👟\n\nCorreo: ${correo}\nContraseña temporal: ${pw}\n\nIngresa aquí: ${link}\n\nTe recomendamos cambiar tu contraseña desde "Editar mi cuenta" en cuanto ingreses.`;
+
+  const html = `
+    <div style="background:#fff;border-radius:18px;width:100%;max-width:420px;
+                box-shadow:0 32px 80px rgba(0,0,0,0.35);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#059669,#047857);padding:22px 24px;text-align:center;">
+        <div style="font-size:38px;margin-bottom:6px;">✅</div>
+        <div style="color:#fff;font-size:17px;font-weight:800;">Usuario creado con éxito</div>
+        <div style="color:rgba(255,255,255,0.85);font-size:12px;margin-top:4px;">Comparte estas credenciales de forma segura</div>
+      </div>
+      <div style="padding:22px 24px;">
+        <textarea readonly id="_credText" style="width:100%;min-height:140px;padding:12px;
+          border:1.5px solid #e2e8f0;border-radius:10px;font-size:12.5px;font-family:inherit;
+          color:#0f172a;box-sizing:border-box;resize:vertical;background:#f8fafc;">${texto}</textarea>
+        <div style="display:flex;gap:10px;margin-top:14px;">
+          <button onclick="navigator.clipboard.writeText(document.getElementById('_credText').value); this.textContent='✅ Copiado'; setTimeout(()=>{this.textContent='📋 Copiar';},1500);"
+            style="flex:1;padding:11px;border:1.5px solid #e2e8f0;border-radius:9px;
+                   background:#f8fafc;color:#374151;font-size:13px;font-weight:700;cursor:pointer;">📋 Copiar</button>
+          <a href="https://wa.me/?text=${encodeURIComponent(texto)}" target="_blank"
+            style="flex:1;padding:11px;border:none;border-radius:9px;
+                   background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:13px;
+                   font-weight:800;cursor:pointer;text-decoration:none;text-align:center;">📲 WhatsApp</a>
+        </div>
+        <button onclick="document.getElementById('dynModalCredenciales').remove()"
+          style="width:100%;margin-top:10px;padding:10px;border:none;background:transparent;
+                 color:#64748b;font-size:12.5px;font-weight:600;cursor:pointer;">Cerrar</button>
+      </div>
+    </div>`;
+
+  _crearOverlay('dynModalCredenciales', html);
 }
 
 
@@ -5443,13 +5916,22 @@ function initAuth() {
       document.getElementById('authOverlay').classList.remove('hidden');
       return;
     }
-    const users = _getUsers();
-    const user  = users.find(u => u.correo === fbUser.email) || users[0];
-    if (!user) { document.getElementById('authOverlay').classList.remove('hidden'); return; }
+
+    // 1) Resolver a qué empresa pertenece este UID y con qué rol/permisos
+    await _resolverEmpresa(fbUser);
+
+    if (!MI_ACTIVO) {
+      mostrarToast('🚫 Tu cuenta fue desactivada. Contacta al administrador de tu empresa.', '#dc2626');
+      await fbAuth.signOut();
+      document.getElementById('authOverlay').classList.remove('hidden');
+      return;
+    }
 
     const btn = document.getElementById('loginBtn');
     if (btn) btn.textContent = 'Cargando tus datos...';
 
+    // 2) Cargar los datos de la empresa (ya resuelta) desde la nube —
+    //    esto trae también la lista de usuarios (_usuarios) del equipo
     try {
       await cargarDatosDesdeNube();
     } catch (e) {
@@ -5457,6 +5939,21 @@ function initAuth() {
       mostrarToast('⚠️ No se pudo conectar con la nube, usando datos locales', '#dc2626');
     }
 
+    // 3) Ahora sí, buscar (o crear) el perfil local de QUIEN inició sesión,
+    //    ya con la lista de usuarios sincronizada desde la nube.
+    const users = _getUsers();
+    let user = users.find(u => u.correo === fbUser.email);
+    if (!user) {
+      user = {
+        id: fbUser.uid, nombre: fbUser.email.split('@')[0], correo: fbUser.email,
+        empresa: 'TENLIO', rol: MI_ROL, permisos: MIS_PERMISOS, plan: 'premium',
+        createdAt: new Date().toISOString(), ultimoLogin: null,
+      };
+      users.push(user);
+    }
+    // La nube (usuarios_index) siempre manda sobre el rol/permisos reales de la sesión
+    user.rol = MI_ROL;
+    user.permisos = MIS_PERMISOS;
     user.ultimoLogin = new Date().toISOString();
     _saveUsers(users);
     _saveSession({ id: user.id, correo: user.correo });
@@ -5479,6 +5976,14 @@ let ventas = [], historial = [], retiros = [], fletes = [], gastos = [];
 let cierresMensuales = {};
 let costoPredGlobal = 0, ventaPredGlobal = 0;
 let vendedores = [], recordatorios = [], cumpleanos = [];
+let inventario = [];
+// ── Marca del negocio (personalizable por cada empresa/cliente) ──
+let MARCA_NOMBRE = null;
+let MARCA_LOGO   = null;
+let MARCA_FIRMA  = null;
+function _marcaNombre() { return (MARCA_NOMBRE && MARCA_NOMBRE.trim()) ? MARCA_NOMBRE.trim() : 'TENLIO'; }
+function _marcaLogo()   { return MARCA_LOGO || LOGO_B64; }
+function _marcaFirma()  { return MARCA_FIRMA || ''; }
 let ventaPagoActual = null;
 let _ultimoGuardado = null;
 const STORAGE_KEY = 'tenlio_v8';
@@ -5488,7 +5993,7 @@ const STORAGE_KEY = 'tenlio_v8';
 // ═══════════════════════════════════════════════
 
 function _snapshot() {
-  return { capital, ganancias, gananciaHistoricaTotal, capitalRecuperable, ventas, historial, retiros, fletes, gastos, costoPredGlobal, ventaPredGlobal, vendedores, recordatorios, cumpleanos, cierresMensuales: (typeof cierresMensuales !== 'undefined' ? cierresMensuales : {}), version: 11, ts: Date.now(),
+  return { capital, ganancias, gananciaHistoricaTotal, capitalRecuperable, ventas, historial, retiros, fletes, gastos, costoPredGlobal, ventaPredGlobal, vendedores, recordatorios, cumpleanos, inventario, marcaNombre: MARCA_NOMBRE, marcaLogo: MARCA_LOGO, marcaFirma: MARCA_FIRMA, cierresMensuales: (typeof cierresMensuales !== 'undefined' ? cierresMensuales : {}), version: 11, ts: Date.now(),
     // ── Cuentas de usuario incluidas en el archivo ──────────────────
     _usuarios: _getUsers() };
 }
@@ -5573,6 +6078,10 @@ function _aplicarSnapshot(p) {
   vendedores             = p.vendedores            ?? [];
   recordatorios          = p.recordatorios         ?? [];
   cumpleanos             = p.cumpleanos            ?? [];
+  inventario             = p.inventario            ?? [];
+  MARCA_NOMBRE           = p.marcaNombre           ?? null;
+  MARCA_LOGO             = p.marcaLogo             ?? null;
+  MARCA_FIRMA            = p.marcaFirma            ?? null;
   capitalRecuperable    = p.capitalRecuperable    ?? 0;
   cierresMensuales      = p.cierresMensuales      ?? {};
   // ── Restaurar cuentas de usuario si el archivo las trae ─────────
@@ -5585,6 +6094,15 @@ function _aplicarSnapshot(p) {
     });
     _saveUsers(merged);
   }
+  _aplicarMarcaUI();
+}
+
+// ── Aplica el nombre/logo de marca configurados a la interfaz (topbar) ──
+function _aplicarMarcaUI() {
+  const nombre = _marcaNombre();
+  const logo   = _marcaLogo();
+  const bn = document.querySelector('.brand-name'); if (bn) bn.textContent = nombre;
+  const bi = document.querySelector('.brand-logo img'); if (bi && logo) bi.src = logo;
 }
 
 // ── Guardar sesión como archivo .tenlio (funciona en CUALQUIER navegador) ──
@@ -5766,6 +6284,9 @@ function showPanel(id, btn) {
   if (id === 'recordatorios')  renderRecordatorios('todos');
   if (id === 'cumpleanos')     renderCumpleanos('todos');
   if (id === 'documentos')     { document.getElementById('doc_buscar').value=''; document.getElementById('doc_resultados').innerHTML=''; document.getElementById('docPreviewArea').style.display='none'; }
+  if (id === 'inventario')     renderInventario();
+  if (id === 'nueva-venta')    _poblarSelectInventario();
+  if (id === 'configuracion')  _cargarFormularioMarca();
 }
 
 // ═══════════════════════════════════════════════
@@ -6231,6 +6752,103 @@ function calcularGanancia() {
 // ═══════════════════════════════════════════════
 // PRECIOS PREDETERMINADOS
 // ═══════════════════════════════════════════════
+// ── MARCA DEL NEGOCIO (personalización por empresa) ───────────────
+function _cargarFormularioMarca() {
+  const nEl = document.getElementById('cfg_marca_nombre');
+  if (nEl) nEl.value = MARCA_NOMBRE || '';
+  const preview = document.getElementById('cfg_marca_preview');
+  if (preview) {
+    const logo = _marcaLogo();
+    if (logo) { preview.src = logo; preview.style.display = 'block'; }
+    else { preview.style.display = 'none'; }
+  }
+  const fileEl = document.getElementById('cfg_marca_logo_file');
+  if (fileEl) {
+    fileEl.onchange = () => {
+      const file = fileEl.files && fileEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview2 = document.getElementById('cfg_marca_preview');
+        if (preview2) { preview2.src = e.target.result; preview2.style.display = 'block'; }
+        fileEl.dataset.b64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+
+  const firmaPreview = document.getElementById('cfg_firma_preview');
+  const firmaPlaceholder = document.getElementById('cfg_firma_placeholder');
+  if (firmaPreview) {
+    const firma = _marcaFirma();
+    if (firma) { firmaPreview.src = firma; firmaPreview.style.display = 'block'; if (firmaPlaceholder) firmaPlaceholder.style.display = 'none'; }
+    else { firmaPreview.style.display = 'none'; if (firmaPlaceholder) firmaPlaceholder.style.display = 'block'; }
+  }
+  const firmaFileEl = document.getElementById('cfg_marca_firma_file');
+  if (firmaFileEl) {
+    firmaFileEl.value = '';
+    delete firmaFileEl.dataset.b64;
+    delete firmaFileEl.dataset.quitar;
+    firmaFileEl.onchange = () => {
+      const file = firmaFileEl.files && firmaFileEl.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fp = document.getElementById('cfg_firma_preview');
+        const fph = document.getElementById('cfg_firma_placeholder');
+        if (fp) { fp.src = e.target.result; fp.style.display = 'block'; }
+        if (fph) fph.style.display = 'none';
+        firmaFileEl.dataset.b64 = e.target.result;
+        delete firmaFileEl.dataset.quitar;
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+}
+
+function quitarFirmaNegocio() {
+  const firmaFileEl = document.getElementById('cfg_marca_firma_file');
+  if (firmaFileEl) { firmaFileEl.value = ''; delete firmaFileEl.dataset.b64; firmaFileEl.dataset.quitar = '1'; }
+  const fp = document.getElementById('cfg_firma_preview');
+  const fph = document.getElementById('cfg_firma_placeholder');
+  if (fp) fp.style.display = 'none';
+  if (fph) fph.style.display = 'block';
+  mostrarToast('Firma quitada del formulario — dale "Guardar Marca" para confirmar', '#64748b');
+}
+
+function guardarMarcaNegocio() {
+  const nombre = (document.getElementById('cfg_marca_nombre').value || '').trim();
+  const fileEl = document.getElementById('cfg_marca_logo_file');
+  const nuevoLogo = fileEl && fileEl.dataset.b64 ? fileEl.dataset.b64 : null;
+  const firmaFileEl = document.getElementById('cfg_marca_firma_file');
+  const nuevaFirma = firmaFileEl && firmaFileEl.dataset.b64 ? firmaFileEl.dataset.b64 : null;
+  const quitarFirma = firmaFileEl && firmaFileEl.dataset.quitar === '1';
+
+  MARCA_NOMBRE = nombre || null;
+  if (nuevoLogo) MARCA_LOGO = nuevoLogo;
+  if (nuevaFirma) MARCA_FIRMA = nuevaFirma;
+  else if (quitarFirma) MARCA_FIRMA = null;
+
+  _aplicarMarcaUI();
+  guardarDatos();
+  mostrarToast('✅ Marca de tu negocio actualizada', '#059669');
+}
+
+function restablecerMarcaNegocio() {
+  if (!confirm('¿Volver a usar el nombre, logo y firma de TENLIO por defecto?')) return;
+  MARCA_NOMBRE = null;
+  MARCA_LOGO = null;
+  MARCA_FIRMA = null;
+  const fileEl = document.getElementById('cfg_marca_logo_file');
+  if (fileEl) { fileEl.value = ''; delete fileEl.dataset.b64; }
+  const firmaFileEl = document.getElementById('cfg_marca_firma_file');
+  if (firmaFileEl) { firmaFileEl.value = ''; delete firmaFileEl.dataset.b64; delete firmaFileEl.dataset.quitar; }
+  _cargarFormularioMarca();
+  _aplicarMarcaUI();
+  guardarDatos();
+  mostrarToast('↩️ Marca restablecida a TENLIO', '#64748b');
+}
+
 function guardarPreciosPredeterminados() {
   costoPredGlobal = parseFloat(document.getElementById('costoPredeterminado').value) || 0;
   ventaPredGlobal = parseFloat(document.getElementById('ventaPredeterminada').value) || 0;
@@ -6382,6 +7000,11 @@ function registrarVenta() {
 
   guardarDatos(); actualizarResumen(); actualizarTablas(); limpiarFormulario();
 
+  // Descontar del inventario si el modelo+talla existe como producto registrado
+  _descontarStockPorVenta(ref, talla, cant);
+  renderInventario();
+  guardarDatos();
+
   // Sincronización central: actualiza cumpleaños y ventas existentes del cliente
   _sincronizarCliente({ nombre, telefono: tel, fechaCumple: cumple || null, origen: 'venta' });
   if (cumple) mostrarToast('🎂 Datos de ' + nombre + ' sincronizados', '#f472b6');
@@ -6398,6 +7021,7 @@ function limpiarFormulario() {
   });
   document.getElementById('cantidadZapatos').value = 1;
   document.getElementById('vendedorVenta').value = '';
+  const invSel = document.getElementById('ventaInvSelect'); if (invSel) invSel.value = '';
   document.getElementById('pctDescuento').value = 0;
   ['cuota1','cuota2','cuota3'].forEach(id => document.getElementById(id).value = 0);
   _selPago('medio','efectivo');
@@ -8616,6 +9240,182 @@ function _poblarSelectVendedor() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// MÓDULO — INVENTARIO DE CALZADO
+// ═══════════════════════════════════════════════════════════════════
+function guardarProductoInventario() {
+  const editId   = document.getElementById('inv_edit_id').value;
+  const ref      = document.getElementById('inv_referencia').value.trim();
+  const marca    = document.getElementById('inv_marca').value.trim();
+  const talla    = document.getElementById('inv_talla').value.trim();
+  const color    = document.getElementById('inv_color').value.trim();
+  const costo    = parseFloat(document.getElementById('inv_costo').value) || 0;
+  const precio   = parseFloat(document.getElementById('inv_precio').value) || 0;
+  const stock    = parseInt(document.getElementById('inv_stock').value) || 0;
+  const stockMin = parseInt(document.getElementById('inv_stock_min').value) || 0;
+
+  if (!ref || !talla) { mostrarToast('⚠️ Ingresa al menos el modelo y la talla', '#de350b'); return; }
+  if (stock < 0) { mostrarToast('⚠️ El stock no puede ser negativo', '#de350b'); return; }
+
+  if (editId) {
+    const p = inventario.find(x => String(x.id) === String(editId));
+    if (p) { Object.assign(p, { referencia: ref, marca, talla, color, costo, precio, stock, stockMin }); }
+    mostrarToast(`✅ Producto "${ref}" actualizado`, '#00875a');
+  } else {
+    inventario.push({ id: Date.now(), referencia: ref, marca, talla, color, costo, precio, stock, stockMin, fechaIngreso: _hoyStr() });
+    mostrarToast(`✅ Producto "${ref}" agregado al inventario`, '#00875a');
+  }
+
+  guardarDatos();
+  limpiarFormularioInventario();
+  renderInventario();
+}
+
+function limpiarFormularioInventario() {
+  document.getElementById('inv_edit_id').value = '';
+  ['inv_referencia','inv_marca','inv_talla','inv_color','inv_costo','inv_precio'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('inv_stock').value = 1;
+  document.getElementById('inv_stock_min').value = 2;
+  document.getElementById('inv_form_titulo').textContent = '➕ Agregar Producto al Inventario';
+  document.getElementById('inv_btn_guardar').textContent = '✅ Guardar Producto';
+}
+
+function editarProductoInventario(id) {
+  const p = inventario.find(x => String(x.id) === String(id));
+  if (!p) return;
+  document.getElementById('inv_edit_id').value = p.id;
+  document.getElementById('inv_referencia').value = p.referencia;
+  document.getElementById('inv_marca').value = p.marca || '';
+  document.getElementById('inv_talla').value = p.talla;
+  document.getElementById('inv_color').value = p.color || '';
+  document.getElementById('inv_costo').value = p.costo || 0;
+  document.getElementById('inv_precio').value = p.precio || 0;
+  document.getElementById('inv_stock').value = p.stock || 0;
+  document.getElementById('inv_stock_min').value = p.stockMin || 0;
+  document.getElementById('inv_form_titulo').textContent = '✏️ Editar Producto';
+  document.getElementById('inv_btn_guardar').textContent = '💾 Guardar Cambios';
+  document.getElementById('inv_form_card').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function eliminarProductoInventario(id) {
+  const p = inventario.find(x => String(x.id) === String(id));
+  if (!p) return;
+  if (!confirm(`¿Eliminar "${p.referencia}" (T${p.talla}) del inventario?`)) return;
+  inventario = inventario.filter(x => String(x.id) !== String(id));
+  guardarDatos(); renderInventario();
+  mostrarToast('Producto eliminado del inventario', '#64748b');
+}
+
+function ajustarStockInventario(id, delta) {
+  const p = inventario.find(x => String(x.id) === String(id));
+  if (!p) return;
+  p.stock = Math.max(0, (p.stock || 0) + delta);
+  guardarDatos(); renderInventario();
+}
+
+function renderInventario() {
+  const body = document.getElementById('inventarioBody');
+  if (!body) return;
+  const q = (document.getElementById('inv_buscar')?.value || '').toLowerCase().trim();
+
+  let lista = inventario.slice();
+  if (q) {
+    lista = lista.filter(p =>
+      (p.referencia||'').toLowerCase().includes(q) ||
+      (p.marca||'').toLowerCase().includes(q) ||
+      (p.color||'').toLowerCase().includes(q) ||
+      String(p.talla||'').toLowerCase().includes(q)
+    );
+  }
+  lista.sort((a,b) => (a.referencia||'').localeCompare(b.referencia||''));
+
+  if (!lista.length) {
+    body.innerHTML = `<tr><td colspan="8" class="empty-row"><div class="em-ico">📦</div>${inventario.length ? 'Sin resultados para tu búsqueda' : 'No hay productos en el inventario'}</td></tr>`;
+  } else {
+    body.innerHTML = lista.map(p => {
+      const bajo = (p.stock||0) <= (p.stockMin||0);
+      return `<tr${bajo ? ' style="background:#fff5f5;"' : ''}>
+        <td><strong>${p.referencia}</strong></td>
+        <td>${p.marca || '—'}</td>
+        <td>${p.talla}</td>
+        <td>${p.color || '—'}</td>
+        <td>${fmt(p.costo||0)}</td>
+        <td>${fmt(p.precio||0)}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="btn-sm btn-outline c-red" onclick="ajustarStockInventario(${p.id},-1)" title="Restar 1" style="padding:2px 8px;">−</button>
+            <span style="font-weight:700;min-width:22px;text-align:center;${bajo?'color:var(--crimson);':''}">${p.stock||0}</span>
+            <button class="btn-sm btn-outline c-green" onclick="ajustarStockInventario(${p.id},1)" title="Sumar 1" style="padding:2px 8px;">+</button>
+            ${bajo ? '<span title="Stock bajo" style="margin-left:4px;">⚠️</span>' : ''}
+          </div>
+        </td>
+        <td>
+          <button class="btn-sm btn-outline c-blue" onclick="editarProductoInventario(${p.id})">✏️</button>
+          <button class="btn-sm btn-outline c-red" onclick="eliminarProductoInventario(${p.id})">🗑️</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // KPIs
+  const totalRefs   = inventario.length;
+  const totalUnid   = inventario.reduce((s,p) => s + (p.stock||0), 0);
+  const valorInv    = inventario.reduce((s,p) => s + (p.costo||0) * (p.stock||0), 0);
+  const bajos       = inventario.filter(p => (p.stock||0) <= (p.stockMin||0));
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('inv_kpi_refs', totalRefs);
+  set('inv_kpi_unidades', totalUnid);
+  set('inv_kpi_valor', fmt(valorInv));
+  set('inv_kpi_bajo', bajos.length);
+  set('invBadgeTotal', `${totalRefs} producto${totalRefs===1?'':'s'}`);
+  set('inv_cnt_total', lista.length);
+
+  const badge = document.getElementById('navInvBajo');
+  if (badge) {
+    if (bajos.length > 0) { badge.textContent = bajos.length; badge.style.display = 'inline-flex'; }
+    else badge.style.display = 'none';
+  }
+
+  _poblarSelectInventario();
+}
+
+function _poblarSelectInventario() {
+  const sel = document.getElementById('ventaInvSelect');
+  if (!sel) return;
+  const valorPrevio = sel.value;
+  const disponibles = inventario.filter(p => (p.stock||0) > 0);
+  sel.innerHTML = '<option value="">— Escribir manualmente —</option>' +
+    disponibles.map(p => `<option value="${p.id}">${p.referencia} · T${p.talla}${p.color ? ' · '+p.color : ''} (Stock: ${p.stock})</option>`).join('');
+  if (disponibles.find(p => String(p.id) === String(valorPrevio))) sel.value = valorPrevio;
+}
+
+function _autoRellenarDesdeInventario(id) {
+  if (!id) return;
+  const p = inventario.find(x => String(x.id) === String(id));
+  if (!p) return;
+  document.getElementById('referenciaZapato').value = p.referencia;
+  document.getElementById('tallaZapato').value = p.talla;
+  if (p.costo)  document.getElementById('costoUnitario').value = p.costo;
+  if (p.precio) document.getElementById('precioVenta').value = p.precio;
+  calcularGanancia();
+  mostrarToast(`📦 Datos de "${p.referencia}" cargados`, '#0052cc');
+}
+
+// Descuenta stock del inventario cuando una venta usa un producto existente
+// (coincidencia por modelo + talla, sin distinguir mayúsculas/espacios).
+function _descontarStockPorVenta(referencia, talla, cantidad) {
+  if (!inventario.length) return;
+  const norm = s => String(s||'').trim().toLowerCase();
+  const p = inventario.find(x => norm(x.referencia) === norm(referencia) && norm(x.talla) === norm(talla));
+  if (!p) return;
+  const antes = p.stock || 0;
+  p.stock = Math.max(0, antes - cantidad);
+  if (antes < cantidad) {
+    mostrarToast(`⚠️ Stock de "${p.referencia}" quedó en 0 (pediste ${cantidad}, había ${antes})`, '#ff8b00');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // MÓDULO 4 — RECORDATORIOS DE COBRO
 // ═══════════════════════════════════════════════════════════════════
 function agregarRecordatorio() {
@@ -8783,7 +9583,8 @@ async function generarDocumento(v, tipo) {
   if (tipo === 'factura') { await _renderFactura(v); return; }
   const infoExtra = document.getElementById('doc_info')?.value||'';
   const folio = 'TEN-'+String(v.id).slice(-6).toUpperCase();
-  const logoSrc = LOGO_B64 || document.querySelector('.brand-logo img')?.src || '';
+  const logoSrc = _marcaLogo();
+  const marcaNombre = _marcaNombre();
   const fechaHoy = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
 
   // ── Título para nombre de archivo PDF ─────────────────────────────
@@ -8812,10 +9613,10 @@ async function generarDocumento(v, tipo) {
 
   <!-- ENCABEZADO -->
   <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#0052cc 100%);padding:22px 30px;display:flex;align-items:center;gap:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
-    ${logoSrc?`<img src="${logoSrc}" alt="TENLIO" style="width:54px;height:54px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);object-fit:cover;flex-shrink:0;">`:``}
+    ${logoSrc?`<img src="${logoSrc}" alt="${marcaNombre}" style="width:54px;height:54px;border-radius:50%;border:3px solid #d4af5a;object-fit:cover;flex-shrink:0;">`:``}
     <div>
-      <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">TENLIO</div>
-      <div style="color:rgba(255,255,255,0.55);font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-top:3px;">Sistema de Ventas &middot; Folio ${folio}</div>
+      <div style="color:#d4af5a;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">${marcaNombre}</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-top:3px;">Sistema de Ventas de Calzado &middot; Folio ${folio}</div>
     </div>
     <div style="margin-left:auto;text-align:right;color:rgba(255,255,255,0.7);font-size:11px;line-height:1.7;">
       Fecha de emisión:<br><strong style="color:#fff;font-size:12px;">${fechaHoy}</strong>
@@ -8854,7 +9655,7 @@ async function generarDocumento(v, tipo) {
       </div>
     </div>
 
-    <p style="font-size:12px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;">Ha cancelado en su totalidad la deuda adquirida con TENLIO. A partir de la fecha de emisión queda a PAZ Y SALVO, no teniendo ninguna obligación pendiente de pago.</p>
+    <p style="font-size:12px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;">Ha cancelado en su totalidad la deuda adquirida con ${marcaNombre}. A partir de la fecha de emisión queda a PAZ Y SALVO, no teniendo ninguna obligación pendiente de pago.</p>
   </div>
 
   <!-- FIRMA -->
@@ -8864,8 +9665,8 @@ async function generarDocumento(v, tipo) {
       <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Firma del cliente &middot; ${v.nombre}</div>
     </div>
     <div style="text-align:center;">
-      <img src="${FIRMA_TENLIO}" alt="Firma TENLIO" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">
-      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; TENLIO</div>
+      ${_marcaFirma() ? `<img src="${_marcaFirma()}" alt="Firma" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">` : `<div style="height:52px;margin-bottom:4px;"></div>`}
+      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; ${marcaNombre}</div>
     </div>
   </div>
 
@@ -8886,9 +9687,9 @@ async function generarDocumento(v, tipo) {
 
   <!-- ENCABEZADO -->
   <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#0052cc 100%);padding:22px 30px;display:flex;align-items:center;gap:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
-    ${logoSrc?`<img src="${logoSrc}" alt="TENLIO" style="width:54px;height:54px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);object-fit:cover;flex-shrink:0;">`:``}
+    ${logoSrc?`<img src="${logoSrc}" alt="${marcaNombre}" style="width:54px;height:54px;border-radius:50%;border:3px solid #d4af5a;object-fit:cover;flex-shrink:0;">`:``}
     <div>
-      <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">TENLIO</div>
+      <div style="color:#d4af5a;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">${marcaNombre}</div>
       <div style="color:rgba(255,255,255,0.55);font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-top:3px;">Estado de Cuenta &middot; ${folio}</div>
     </div>
     <div style="margin-left:auto;text-align:right;color:rgba(255,255,255,0.7);font-size:11px;line-height:1.7;">
@@ -8941,7 +9742,7 @@ async function generarDocumento(v, tipo) {
       </div>
     </div>
 
-    <p style="font-size:12px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;">Este documento es un extracto informativo del estado actual de su crédito con TENLIO.</p>
+    <p style="font-size:12px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;">Este documento es un extracto informativo del estado actual de su crédito con ${marcaNombre}.</p>
   </div>
 
   <!-- FIRMA -->
@@ -8951,8 +9752,8 @@ async function generarDocumento(v, tipo) {
       <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Firma del cliente &middot; ${v.nombre}</div>
     </div>
     <div style="text-align:center;">
-      <img src="${FIRMA_TENLIO}" alt="Firma TENLIO" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">
-      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; TENLIO</div>
+      ${_marcaFirma() ? `<img src="${_marcaFirma()}" alt="Firma" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">` : `<div style="height:52px;margin-bottom:4px;"></div>`}
+      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; ${marcaNombre}</div>
     </div>
   </div>
 
@@ -9086,7 +9887,8 @@ function generarEdcUnificado() {
   const nombre  = ventas_[0].nombre;
   const tel     = ventas_[0].telefono || '';
   const infoExtra = document.getElementById('doc_info')?.value || '';
-  const logoSrc   = LOGO_B64 || document.querySelector('.brand-logo img')?.src || '';
+  const logoSrc   = _marcaLogo();
+  const marcaNombre = _marcaNombre();
   const fechaHoy  = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
   const folio     = 'EDC-UNI-' + Date.now().toString().slice(-6);
 
@@ -9146,9 +9948,9 @@ function generarEdcUnificado() {
 
   <!-- ENCABEZADO -->
   <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#0052cc 100%);padding:22px 30px;display:flex;align-items:center;gap:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
-    ${logoSrc?`<img src="${logoSrc}" alt="TENLIO" style="width:54px;height:54px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);object-fit:cover;flex-shrink:0;">`:``}
+    ${logoSrc?`<img src="${logoSrc}" alt="${marcaNombre}" style="width:54px;height:54px;border-radius:50%;border:3px solid #d4af5a;object-fit:cover;flex-shrink:0;">`:``}
     <div>
-      <div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">TENLIO</div>
+      <div style="color:#d4af5a;font-size:22px;font-weight:900;letter-spacing:1.5px;line-height:1.1;">${marcaNombre}</div>
       <div style="color:rgba(255,255,255,0.55);font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-top:3px;">Estado de Cuenta Unificado &middot; ${folio}</div>
     </div>
     <div style="margin-left:auto;text-align:right;color:rgba(255,255,255,0.7);font-size:11px;line-height:1.7;">
@@ -9193,7 +9995,7 @@ function generarEdcUnificado() {
     <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#374151;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #e2e8f0;">Detalle por compra</div>
     ${bloquesVentas}
 
-    <p style="font-size:11px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;margin-top:8px;">Este documento es un extracto consolidado del estado actual de todos los créditos activos del cliente con TENLIO.</p>
+    <p style="font-size:11px;color:#64748b;text-align:center;line-height:1.75;font-style:italic;padding:0 16px;margin-top:8px;">Este documento es un extracto consolidado del estado actual de todos los créditos activos del cliente con ${marcaNombre}.</p>
   </div>
 
   <!-- FIRMA -->
@@ -9203,8 +10005,8 @@ function generarEdcUnificado() {
       <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Firma del cliente &middot; ${nombre}</div>
     </div>
     <div style="text-align:center;">
-      <img src="${FIRMA_TENLIO}" alt="Firma TENLIO" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">
-      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; TENLIO</div>
+      ${_marcaFirma() ? `<img src="${_marcaFirma()}" alt="Firma" style="height:52px;width:auto;display:block;margin:0 auto 4px;mix-blend-mode:multiply;object-fit:contain;">` : `<div style="height:52px;margin-bottom:4px;"></div>`}
+      <div style="border-top:1.5px solid #334155;width:180px;padding-top:6px;font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 auto;">Autorizado y firmado &middot; ${marcaNombre}</div>
     </div>
   </div>
 
@@ -9829,6 +10631,8 @@ async function _generarQRDataUrl(texto) {
 async function _renderFactura(v) {
   _docTipoActual = 'factura'; _docVentaWA = v;
   const folio     = 'FAC-' + String(v.id).slice(-6).toUpperCase();
+  const logoSrc   = _marcaLogo();
+  const marcaNombre = _marcaNombre();
   const fechaHoy  = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
   const saldo     = v.totalVenta - v.pagado;
   const tieneDesc = (v.pctDescuento||0) > 0;
@@ -9862,8 +10666,8 @@ async function _renderFactura(v) {
     : `<tr><td colspan="3" style="padding:6px 10px;font-size:10px;color:#9ca3af;text-align:center;font-style:italic;">Sin abonos registrados</td></tr>`;
 
   // \u2500\u2500 Logo empresa \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-  const logoHtml = LOGO_B64
-    ? `<img src="${LOGO_B64}" alt="Logo" style="height:46px;width:46px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.25);flex-shrink:0;">`
+  const logoHtml = logoSrc
+    ? `<img src="${logoSrc}" alt="Logo" style="height:46px;width:46px;border-radius:50%;object-fit:cover;border:3px solid #d4af5a;flex-shrink:0;">`
     : '';
 
   const html = `
@@ -9885,7 +10689,7 @@ async function _renderFactura(v) {
     <div style="display:flex;align-items:center;gap:14px;">
       ${logoHtml}
       <div>
-        <div style="color:#ffffff;font-size:24px;font-weight:900;letter-spacing:2px;line-height:1.1;">TENLIO</div>
+        <div style="color:#d4af5a;font-size:24px;font-weight:900;letter-spacing:2px;line-height:1.1;">${marcaNombre}</div>
         <div style="color:rgba(255,255,255,0.55);font-size:8.5px;text-transform:uppercase;letter-spacing:2.5px;margin-top:3px;">Sistema de Ventas de Calzado</div>
       </div>
     </div>
@@ -10035,7 +10839,7 @@ async function _renderFactura(v) {
     <!-- Texto legal centrado -->
     <div style="text-align:center;margin-bottom:12px;">
       <p style="font-size:10.5px;color:#64748b;font-style:italic;line-height:1.75;margin:0;">
-        Este documento es comprobante de la transacci\u00f3n realizada con TENLIO. Conserve esta factura como soporte de su compra.
+        Este documento es comprobante de la transacci\u00f3n realizada con ${marcaNombre}. Conserve esta factura como soporte de su compra.
       </p>
       ${v.fechaLimite ? `<p style="font-size:10.5px;color:#374151;font-style:italic;font-weight:600;line-height:1.6;margin:0;">Fecha acordada de pago total: <span style="color:#1d4ed8;font-weight:800;">${v.fechaLimite}</span>.</p>` : ''}
     </div>
@@ -10044,13 +10848,12 @@ async function _renderFactura(v) {
     <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid #e2e8f0;padding-top:12px;">
       <div style="text-align:center;">
         ${qrImg ? `<div style="display:inline-block;padding:8px;border:1.5px solid #dde3ee;border-radius:10px;background:#ffffff;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:5px;">${qrImg}</div>` : ''}
-        <div style="font-size:9px;color:#9ca3af;font-style:italic;line-height:1.6;margin-top:2px;">Escanea para verificar<br><strong style="color:#64748b;">${folio}</strong> &middot; TENLIO</div>
+        <div style="font-size:9px;color:#9ca3af;font-style:italic;line-height:1.6;margin-top:2px;">Escanea para verificar<br><strong style="color:#64748b;">${folio}</strong> &middot; ${marcaNombre}</div>
       </div>
       <div style="text-align:center;">
-        <img src="${FIRMA_TENLIO}" alt="Firma TENLIO"
-             style="height:56px;width:auto;display:block;margin:0 auto 5px;mix-blend-mode:multiply;object-fit:contain;opacity:.9;">
+        ${_marcaFirma() ? `<img src="${_marcaFirma()}" alt="Firma" style="height:56px;width:auto;display:block;margin:0 auto 5px;mix-blend-mode:multiply;object-fit:contain;opacity:.9;">` : `<div style="height:56px;margin-bottom:5px;"></div>`}
         <div style="border-top:1.5px solid #94a3b8;padding-top:5px;font-size:9px;font-weight:700;color:#475569;letter-spacing:.8px;text-transform:uppercase;">
-          Autorizado y Firmado &middot; TENLIO
+          Autorizado y Firmado &middot; ${marcaNombre}
         </div>
       </div>
     </div>
