@@ -4734,6 +4734,15 @@ const FB_DOC = () => fbDb.collection('tenlioVentas').doc(EMPRESA_ID || fbAuth.cu
 let _fbUnsub = null;        // listener en tiempo real activo
 let _fbGuardando = false;   // evita loops al recibir nuestro propio guardado
 let _fbSaveTimer = null;    // debounce de escrituras
+
+// ── Cuenta maestra (Ever / TENLIO Sport) — administra licencias de TODOS los clientes ──
+const MASTER_EMAIL = atob('ZXZlcm1lc3RyYTIzQGdtYWlsLmNvbQ==');
+let ES_MASTER = false;      // true solo cuando inicia sesión la cuenta maestra
+
+// ── Licencias SaaS: 1 documento por empresa en la colección 'licencias' ──
+const LICENCIAS_COL = 'licencias';
+const FB_LIC = (empresaId) => fbDb.collection(LICENCIAS_COL).doc(empresaId || EMPRESA_ID);
+let LICENCIA_ACTUAL = null; // documento de licencia de la empresa de la sesión actual
 </script>
 
 <script>
@@ -4802,6 +4811,15 @@ const PERMISOS_ROL = {
   },
 };
 
+// ── Catálogo de planes de licencia (TENLIO Sport SaaS) ────
+const PLANES_LICENCIA = {
+  trial:   { label:'🎁 Prueba Gratis', color:'#6554c0', bg:'#f0edff', dias:15  },
+  basico:  { label:'🥉 Básico',        color:'#0891b2', bg:'#cffafe', dias:30  },
+  pro:     { label:'🥈 Pro',           color:'#0052cc', bg:'#e8f0ff', dias:30  },
+  premium: { label:'🥇 Premium',       color:'#b8860b', bg:'#fff7e0', dias:30  },
+};
+const DIAS_ALERTA_VENCIMIENTO = 5; // a partir de cuántos días restantes se muestra "por vencer"
+
 // ── Helpers de almacenamiento ─────────────────────────────
 function _getUsers()    { try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; } }
 function _saveUsers(u)  { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
@@ -4838,6 +4856,78 @@ async function _resolverEmpresa(fbUser) {
     EMPRESA_ID = fbUser.uid; MI_ROL = 'dueno';
     MIS_PERMISOS = Object.fromEntries(PERMISOS_DEF.map(p => [p.key, true]));
     MI_ACTIVO = true;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// LICENCIAS — control de suscripción por empresa (TENLIO Sport)
+// Colección 'licencias/{empresaId}': { plan, activo, fechaInicio,
+//   fechaVencimiento, empresaNombre, correoDueno, notas, creadoEn, actualizadoEn }
+// ══════════════════════════════════════════════════════════════
+
+// ── Calcula el estado de una licencia: activa / por vencer / vencida / bloqueada
+function _licenciaEstadoInfo(lic) {
+  if (!lic) return { estado:'sin-licencia', label:'⛔ Sin licencia', color:'#dc2626', bg:'#fee2e2', dias:null };
+  if (lic.activo === false) return { estado:'bloqueada', label:'🚫 Bloqueada', color:'#dc2626', bg:'#fee2e2', dias:null };
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const venc = lic.fechaVencimiento ? new Date(lic.fechaVencimiento + 'T00:00:00') : null;
+  if (!venc || isNaN(venc.getTime())) {
+    return { estado:'sin-fecha', label:'⚠️ Sin fecha de vencimiento', color:'#dc2626', bg:'#fee2e2', dias:null };
+  }
+  const dias = Math.round((venc - hoy) / 86400000);
+  if (dias < 0)  return { estado:'vencida',   label:'⛔ Vencida',   color:'#dc2626', bg:'#fee2e2', dias };
+  if (dias <= DIAS_ALERTA_VENCIMIENTO) return { estado:'por-vencer', label:'⏰ Vence en ' + dias + ' día' + (dias===1?'':'s'), color:'#d97706', bg:'#fef3c7', dias };
+  return { estado:'activa', label:'✅ Activa', color:'#059669', bg:'#d1fae5', dias };
+}
+
+// ── Verifica (y si hace falta, crea) la licencia de la empresa que intenta entrar.
+//    Devuelve { ok:true } si puede pasar, o { ok:false, motivo } si debe bloquearse.
+//    La cuenta maestra (MASTER_EMAIL) nunca se bloquea: ella administra las licencias.
+async function _verificarLicencia(fbUser) {
+  ES_MASTER = (fbUser.email === MASTER_EMAIL);
+  if (ES_MASTER) { LICENCIA_ACTUAL = null; return { ok:true }; }
+
+  try {
+    const ref  = FB_LIC(EMPRESA_ID);
+    const snap = await ref.get();
+
+    if (!snap.exists) {
+      // Solo el dueño (primer login de su empresa) puede generar el registro de licencia.
+      if (fbUser.uid !== EMPRESA_ID) {
+        return { ok:false, motivo:'Tu empresa aún no tiene una licencia registrada. Contacta al Dueño de la cuenta.' };
+      }
+      const hoy   = new Date();
+      const venc  = new Date(hoy.getTime() + PLANES_LICENCIA.trial.dias * 86400000);
+      const nuevaLic = {
+        empresaId: EMPRESA_ID,
+        empresaNombre: (typeof MARCA_NOMBRE !== 'undefined' && MARCA_NOMBRE) ? MARCA_NOMBRE : 'TENLIO',
+        correoDueno: fbUser.email,
+        plan: 'trial',
+        activo: true,
+        fechaInicio: hoy.toISOString().slice(0,10),
+        fechaVencimiento: venc.toISOString().slice(0,10),
+        notas: 'Licencia de prueba creada automáticamente en el primer inicio de sesión.',
+        creadoEn: hoy.toISOString(),
+        actualizadoEn: hoy.toISOString(),
+      };
+      await ref.set(nuevaLic);
+      LICENCIA_ACTUAL = nuevaLic;
+      return { ok:true };
+    }
+
+    const lic = snap.data();
+    LICENCIA_ACTUAL = lic;
+    const info = _licenciaEstadoInfo(lic);
+    if (info.estado === 'vencida' || info.estado === 'bloqueada' || info.estado === 'sin-fecha') {
+      const msg = info.estado === 'bloqueada'
+        ? 'Tu licencia fue bloqueada por el proveedor. Contacta a soporte para reactivarla.'
+        : 'Tu licencia venció. Contacta al proveedor para renovar tu suscripción.';
+      return { ok:false, motivo: msg };
+    }
+    return { ok:true };
+  } catch (e) {
+    console.warn('No se pudo verificar la licencia, se permite el acceso por respaldo:', e);
+    return { ok:true };
   }
 }
 
@@ -5885,7 +5975,6 @@ function initAuth() {
   // ── Asegurar perfil local "dueño" (usado por la UI de permisos/topbar) ──
   (function _seedMaster() {
     try {
-    const MASTER_EMAIL = atob('ZXZlcm1lc3RyYTIzQGdtYWlsLmNvbQ==');
     const users = _getUsers();
     let master = users.find(u => u.correo === MASTER_EMAIL);
     if (!master) {
@@ -5922,6 +6011,15 @@ function initAuth() {
 
     if (!MI_ACTIVO) {
       mostrarToast('🚫 Tu cuenta fue desactivada. Contacta al administrador de tu empresa.', '#dc2626');
+      await fbAuth.signOut();
+      document.getElementById('authOverlay').classList.remove('hidden');
+      return;
+    }
+
+    // 1.5) Verificar licencia de la empresa (control de suscripción SaaS TENLIO Sport)
+    const licChk = await _verificarLicencia(fbUser);
+    if (!licChk.ok) {
+      mostrarToast('🚫 ' + licChk.motivo, '#dc2626');
       await fbAuth.signOut();
       document.getElementById('authOverlay').classList.remove('hidden');
       return;
