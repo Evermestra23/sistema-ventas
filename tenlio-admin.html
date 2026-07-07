@@ -7,12 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0a1628; --navy2:#0f172a; --gold:#b8860b; --gold-l:#fff7e0;
-  --bg:#f1f5f9; --border:#e2e8f0; --text:#0f172a; --muted:#64748b;
+  --navy:#0a1628; --navy2:#111d33; --gold:#b8860b; --gold-l:#fff7e0; --gold-soft:#d4af5a;
+  --bg:#f6f4ef; --border:#e7e2d6; --text:#1c2430; --muted:#6b7280;
   --emerald:#059669; --amber:#d97706; --crimson:#dc2626;
+  --card-shadow:0 1px 2px rgba(20,20,10,0.04), 0 8px 24px rgba(20,20,10,0.05);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body{
+  font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;
+  background:
+    radial-gradient(1100px 460px at 12% -8%, rgba(184,134,11,0.07), transparent 60%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
 
 /* ── Login ── */
 #loginOverlay{
@@ -63,10 +70,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .login-card input::placeholder{color:#54617a;}
 .pw-wrap{position:relative;}
 .pw-wrap input{padding-right:44px;}
+.pw-wrap.dual input{padding-right:76px;}
 .pw-toggle{
   position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;
   cursor:pointer;font-size:18px;line-height:1;padding:6px;width:auto !important;margin:0 !important;
 }
+.pw-gen{
+  position:absolute;right:38px;top:50%;transform:translateY(-50%);background:none;border:none;
+  cursor:pointer;font-size:16px;line-height:1;padding:6px;width:auto !important;margin:0 !important;
+}
+.field-hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4;}
+.result-box{
+  background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-top:4px;
+}
+.result-box .rl{font-size:10.5px;color:#166534;font-weight:800;text-transform:uppercase;letter-spacing:.4px;}
+.result-box .rv{font-size:14px;color:#14532d;font-weight:700;margin-bottom:8px;word-break:break-all;}
+.result-box .rv:last-child{margin-bottom:0;}
 .login-card button.submit-btn{
   width:100%;padding:13px;border:none;border-radius:10px;
   background:linear-gradient(135deg,#2563eb,#1d4ed8);
@@ -76,6 +95,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 }
 .login-card button.submit-btn:disabled{opacity:0.6;cursor:not-allowed;}
 #loginError{color:#f87171;font-size:12px;text-align:center;margin-top:14px;min-height:16px;}
+.forgot-link{text-align:center;margin-top:16px;}
+.forgot-link a{color:#93c5fd;font-size:12px;font-weight:700;text-decoration:none;}
+.forgot-link a:hover{text-decoration:underline;}
 
 /* ── App ── */
 #app{display:none;}
@@ -106,26 +128,57 @@ header.topbar .brand-text .badge-mini{
   color:#93c5fd;font-size:10px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;
 }
 header.topbar button{
-  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;
-  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);color:#fff;
+  padding:9px 18px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:background .15s;
 }
+header.topbar button:hover{background:rgba(255,255,255,0.2);}
 
-main{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+main{max-width:1220px;margin:0 auto;padding:26px 20px 60px;}
 
-.stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.dash-grid{display:grid;grid-template-columns:360px 1fr;gap:22px;align-items:start;}
+@media (max-width:900px){.dash-grid{grid-template-columns:1fr;}}
+.panel{
+  background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;
+  box-shadow:var(--card-shadow);
+}
+.panel-head{
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.panel-head .ico{
+  width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  background:linear-gradient(135deg,var(--navy),#1e3a5f);
+  box-shadow:0 0 0 1px rgba(184,134,11,0.35) inset;
+}
+.panel-head .txt{
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--navy2);
+  text-transform:uppercase;letter-spacing:.6px;
+}
+.panel-nuevo .toolbar{margin-bottom:0;}
+.panel-tabla .tabla-wrap{border:none;box-shadow:none;border-radius:0;}
+
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:22px;}
 .stat-card{
-  flex:1;min-width:140px;background:#fff;border:1px solid var(--border);border-radius:12px;
-  padding:14px 18px;box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  flex:1;min-width:150px;background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:16px 20px;box-shadow:var(--card-shadow);position:relative;overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease;
 }
-.stat-card .n{font-size:24px;font-weight:800;color:var(--navy2);}
-.stat-card .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;margin-top:2px;}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent, var(--gold));
+}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(20,20,10,0.06), 0 14px 28px rgba(20,20,10,0.08);}
+.stat-card .n{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--navy2);line-height:1;}
+.stat-card .l{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:6px;}
 
-.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.toolbar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
 .search-wrap{position:relative;flex:1;min-width:220px;}
 .search-wrap input{
   width:100%;padding:10px 36px 10px 14px;border:1.5px solid var(--border);border-radius:9px;
-  font-size:13px;font-family:inherit;
+  font-size:13px;font-family:inherit;transition:border-color .15s, box-shadow .15s;
 }
+.search-wrap input:focus{outline:none;border-color:var(--gold-soft);box-shadow:0 0 0 3px rgba(184,134,11,0.12);}
 .search-clear{
   position:absolute;right:6px;top:50%;transform:translateY(-50%);
   width:24px;height:24px;border-radius:50%;border:none;background:#e2e8f0;color:#64748b;
@@ -135,22 +188,44 @@ main{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
 .search-clear:hover{background:#cbd5e1;color:#334155;}
 .search-clear.show{display:flex;}
 .toolbar select{padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;background:#fff;}
+.toolbar select:focus{outline:none;border-color:var(--gold-soft);}
 
-.tabla-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.tabla-wrap{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--card-shadow);}
 table{width:100%;border-collapse:collapse;}
 thead th{
-  text-align:left;padding:12px 14px;font-size:11px;color:var(--muted);text-transform:uppercase;
-  border-bottom:2px solid var(--border);background:#f8fafc;
+  text-align:left;padding:13px 14px;font-size:10.5px;color:var(--navy2);text-transform:uppercase;
+  letter-spacing:.5px;font-weight:800;border-bottom:2px solid var(--border);
+  background:linear-gradient(180deg,#faf9f5,#f3f1ea);
 }
-tbody td{padding:12px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-align:middle;}
+tbody td{padding:13px 14px;border-bottom:1px solid #f2efe6;font-size:13px;vertical-align:middle;}
 tbody tr:last-child td{border-bottom:none;}
-tbody tr:hover{background:#f8fafc;}
+tbody tr{transition:background .12s;}
+tbody tr:hover{background:#fbf9f3;}
 
 .badge{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;}
 .btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:#fff;
-  color:#0052cc;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn:hover{background:#f8fafc;}
-.row-actions{display:flex;gap:6px;justify-content:flex-end;}
+  color:#0052cc;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+.btn:hover{background:#f8fafc;border-color:#cbd5e1;}
+.btn-nuevo{
+  padding:10px 18px;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;
+  font-family:inherit;color:#fff;background:linear-gradient(135deg,var(--gold),#8a6508);
+  box-shadow:0 4px 12px rgba(184,134,11,0.4);transition:transform .15s, box-shadow .15s, filter .15s;
+}
+.btn-nuevo:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 16px rgba(184,134,11,0.45);}
+.row-actions{display:flex;gap:6px;justify-content:flex-end;align-items:center;flex-wrap:wrap;}
+.btn-toggle{
+  padding:6px 12px;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;
+  font-family:inherit;white-space:nowrap;transition:.15s;
+}
+.btn-toggle.is-on{background:#d1fae5;color:#059669;}
+.btn-toggle.is-on:hover{background:#a7f3d0;}
+.btn-toggle.is-off{background:#fee2e2;color:#dc2626;}
+.btn-toggle.is-off:hover{background:#fecaca;}
+.btn-renovar{
+  padding:6px 12px;border:1.5px solid #bbf7d0;border-radius:8px;background:#f0fdf4;
+  color:#059669;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;
+}
+.btn-renovar:hover{background:#dcfce7;}
 .icon-btn{
   width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:#fff;
   display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;
@@ -179,10 +254,19 @@ tbody tr:hover{background:#f8fafc;}
 .modal-head .t{color:#fff;font-size:16px;font-weight:800;}
 .modal-head .s{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px;}
 .modal-body{padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
-.field label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;}
-.field select, .field input[type=date], .field textarea{
-  width:100%;padding:9px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;
+.field label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px;}
+.field{margin-bottom:14px;}
+.field input[type=text], .field input[type=email], .field input[type=date],
+.field select, .field textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;
+  font-size:13px;font-family:inherit;color:var(--text);background:#fff;
+  transition:border-color .15s, box-shadow .15s;
 }
+.field input[type=text]:focus, .field input[type=email]:focus, .field input[type=date]:focus,
+.field select:focus, .field textarea:focus{
+  outline:none;border-color:var(--gold-soft);box-shadow:0 0 0 3px rgba(184,134,11,0.12);
+}
+.field input::placeholder, .field textarea::placeholder{color:#a8a29e;}
 .field textarea{resize:vertical;}
 .extend-row{display:flex;gap:8px;}
 .extend-row button{flex:1;padding:8px;border:1.5px dashed #cbd5e1;border-radius:8px;background:#f8fafc;
@@ -220,17 +304,18 @@ tbody tr:hover{background:#f8fafc;}
 
     <div class="input-row">
       <div class="field-label"><span>✉️</span> Correo Electrónico</div>
-      <input type="email" id="loginEmail" placeholder="admin@tenlio.com" autocomplete="username">
+      <input type="email" id="loginEmail" name="tenlio_admin_user" placeholder="admin@tenlio.com" autocomplete="off" spellcheck="false">
     </div>
     <div class="input-row">
       <div class="field-label"><span>🔒</span> Contraseña</div>
       <div class="pw-wrap">
-        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        <input type="password" id="loginPass" name="tenlio_admin_pass" placeholder="••••••••" autocomplete="off">
         <button type="button" class="pw-toggle" id="pwToggle" onclick="togglePassword()" title="Mostrar/ocultar contraseña">🙈</button>
       </div>
     </div>
     <button class="submit-btn" id="loginBtn" onclick="hacerLogin()">🛡️ Ingresar al Panel</button>
     <div id="loginError"></div>
+    <div class="forgot-link"><a href="#" onclick="authForgotPasswordAdmin();return false;">🔑 ¿Olvidaste tu contraseña?</a></div>
   </div>
 </div>
 
@@ -251,38 +336,116 @@ tbody tr:hover{background:#f8fafc;}
   <main>
     <div class="stats" id="statsRow"></div>
 
-    <div class="toolbar">
-      <div class="search-wrap">
-        <input type="text" id="buscador" placeholder="🔎 Buscar por empresa o correo..." oninput="filtrarTabla(this.value)">
-        <button type="button" class="search-clear" id="btnLimpiarBusqueda" title="Limpiar búsqueda" onclick="limpiarBusqueda()">✕</button>
-      </div>
-      <select id="filtroEstado" onchange="filtrarTabla(document.getElementById('buscador').value)">
-        <option value="">Todos los estados</option>
-        <option value="activa">✅ Activa</option>
-        <option value="por-vencer">⏰ Por vencer</option>
-        <option value="vencida">⛔ Vencida</option>
-        <option value="bloqueada">🚫 Bloqueada</option>
-      </select>
-      <button class="btn" onclick="cargarLicencias()">↻ Recargar</button>
-    </div>
+    <div class="dash-grid">
+      <!-- ═══ PANEL IZQUIERDO: NUEVO CLIENTE (formulario fijo, siempre visible) ═══ -->
+      <div class="panel panel-nuevo">
+        <div class="panel-head"><div class="ico">👤</div><div class="txt">Nuevo Cliente</div></div>
 
-    <div class="tabla-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Empresa</th>
-            <th>Plan</th>
-            <th>Vencimiento</th>
-            <th>Estado</th>
-            <th style="text-align:right;">Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tablaBody">
-          <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">Cargando licencias...</td></tr>
-        </tbody>
-      </table>
+        <!-- ── Vista 1: Formulario ── -->
+        <div id="ncFormView">
+          <div class="field">
+            <label>Nombre de la empresa</label>
+            <input type="text" id="ncEmpresa" placeholder="Ej. Calzado El Dorado">
+          </div>
+          <div class="field">
+            <label>Correo del cliente</label>
+            <input type="email" id="ncCorreo" placeholder="cliente@correo.com">
+          </div>
+          <div class="field">
+            <label>Contraseña temporal</label>
+            <div class="pw-wrap dual">
+              <input type="text" id="ncPassword" placeholder="Genera o escribe una contraseña">
+              <button type="button" class="pw-gen" title="Generar contraseña" onclick="generarPasswordCliente()">🎲</button>
+              <button type="button" class="pw-toggle" id="ncPwToggle" title="Mostrar/ocultar" onclick="toggleNcPassword()">🙈</button>
+            </div>
+            <div class="field-hint">El cliente podrá cambiarla luego desde su propio menú de Configuración.</div>
+          </div>
+          <div class="field">
+            <label>Plan inicial</label>
+            <select id="ncPlan" onchange="_actualizarVencimientoNC()">
+              <option value="trial">🎁 Prueba Gratis (15 días)</option>
+              <option value="basico">🥉 Básico</option>
+              <option value="pro">🥈 Pro</option>
+              <option value="premium">🥇 Premium</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Fecha de vencimiento</label>
+            <input type="date" id="ncVencimiento">
+          </div>
+          <div class="extend-row">
+            <button onclick="_extenderNC(30)">+30 días</button>
+            <button onclick="_extenderNC(15)">+15 días</button>
+          </div>
+          <div class="field">
+            <label>Notas internas</label>
+            <textarea id="ncNotas" rows="2" placeholder="Ej. Pagó plan Pro anual — Hotmart"></textarea>
+          </div>
+          <div class="warn-note" id="ncError" style="display:none;background:#fef2f2;border-color:#fecaca;color:#991b1b;"></div>
+
+          <button class="btn-nuevo" id="ncCrearBtn" style="width:100%;justify-content:center;display:flex;gap:6px;margin-top:6px;"
+            onclick="crearNuevoCliente()">✅ Crear cliente y activar licencia</button>
+        </div>
+
+        <!-- ── Vista 2: Resultado (credenciales listas para enviar) ── -->
+        <div id="ncResultView" style="display:none;flex-direction:column;gap:12px;">
+          <div style="text-align:center;font-size:34px;">✅</div>
+          <div style="text-align:center;font-size:14px;font-weight:700;color:#1e293b;">
+            ¡Cliente creado con éxito!
+          </div>
+          <div class="result-box">
+            <div class="rl">Correo</div>
+            <div class="rv" id="ncResCorreo">—</div>
+            <div class="rl">Contraseña temporal</div>
+            <div class="rv" id="ncResPassword">—</div>
+          </div>
+          <button class="btn" style="width:100%;justify-content:center;display:flex;gap:6px;padding:10px;font-size:12px;"
+            onclick="copiarMensajeWhatsapp()">📋 Copiar mensaje para WhatsApp</button>
+          <button class="btn-nuevo" style="width:100%;justify-content:center;display:flex;gap:6px;"
+            onclick="resetFormNuevoCliente()">➕ Crear otro cliente</button>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL DERECHO: CLIENTES REGISTRADOS (tabla) ═══ -->
+      <div class="panel panel-tabla">
+        <div class="panel-head"><div class="ico">👥</div><div class="txt">Clientes Registrados</div></div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <input type="text" id="buscador" placeholder="🔎 Buscar por empresa o correo..." oninput="filtrarTabla(this.value)">
+            <button type="button" class="search-clear" id="btnLimpiarBusqueda" title="Limpiar búsqueda" onclick="limpiarBusqueda()">✕</button>
+          </div>
+          <select id="filtroEstado" onchange="filtrarTabla(document.getElementById('buscador').value)">
+            <option value="">Todos los estados</option>
+            <option value="activa">✅ Activa</option>
+            <option value="por-vencer">⏰ Por vencer</option>
+            <option value="vencida">⛔ Vencida</option>
+            <option value="bloqueada">🚫 Bloqueada</option>
+          </select>
+          <button class="btn" onclick="cargarLicencias()">↻ Recargar</button>
+        </div>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Plan</th>
+                <th>Vencimiento</th>
+                <th>Días</th>
+                <th>Estado</th>
+                <th style="text-align:right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaBody">
+              <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">Cargando licencias...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </main>
+
 </div>
 
 <!-- ═══ MODAL EDITAR LICENCIA ═══ -->
@@ -360,6 +523,7 @@ tbody tr:hover{background:#f8fafc;}
   </div>
 </div>
 
+<!-- ═══ MODAL NUEVO CLIENTE (crea cuenta + licencia de una sola vez) ═══ -->
 <div id="toast"></div>
 
 <!-- Firebase SDK (compat) — mismo proyecto que TENLIO Sport (tenlio-ventas) -->
@@ -382,16 +546,20 @@ firebase.initializeApp(firebaseConfig);
 const fbAuth = firebase.auth();
 const fbDb   = firebase.firestore();
 
+// Limpieza inmediata al cargar la página, antes de saber si hay sesión activa
+// (evita que el navegador muestre credenciales autocompletadas al abrir el archivo).
+_limpiarCamposLogin();
+
 const MASTER_EMAIL   = atob('ZXZlcm1lc3RyYTIzQGdtYWlsLmNvbQ==');
 const LICENCIAS_COL  = 'licencias';
 const DIAS_ALERTA_VENCIMIENTO = 5;
 
 
 const PLANES_LICENCIA = {
-  trial:   { label:'🎁 Prueba Gratis', color:'#6554c0', bg:'#f0edff' },
-  basico:  { label:'🥉 Básico',        color:'#0891b2', bg:'#cffafe' },
-  pro:     { label:'🥈 Pro',           color:'#0052cc', bg:'#e8f0ff' },
-  premium: { label:'🥇 Premium',       color:'#b8860b', bg:'#fff7e0' },
+  trial:   { label:'🎁 Prueba Gratis', color:'#6554c0', bg:'#f0edff', dias:15 },
+  basico:  { label:'🥉 Básico',        color:'#0891b2', bg:'#cffafe', dias:30 },
+  pro:     { label:'🥈 Pro',           color:'#0052cc', bg:'#e8f0ff', dias:30 },
+  premium: { label:'🥇 Premium',       color:'#b8860b', bg:'#fff7e0', dias:30 },
 };
 
 let _todasLasLicencias = [];
@@ -418,6 +586,26 @@ function togglePassword() {
 }
 
 // ── Login (restringido a la cuenta maestra) ─────────────────
+// ── Recuperar contraseña de la cuenta maestra (envía correo real de Firebase) ──
+function authForgotPasswordAdmin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+
+  if (!email) {
+    errEl.textContent = 'Escribe tu correo arriba y vuelve a hacer clic en "¿Olvidaste tu contraseña?".';
+    return;
+  }
+  if (email.toLowerCase() !== MASTER_EMAIL.toLowerCase()) {
+    errEl.textContent = 'Este panel solo reconoce la cuenta maestra de TENLIO.';
+    return;
+  }
+
+  fbAuth.sendPasswordResetEmail(email)
+    .then(() => mostrarToast('📧 Te enviamos un correo para restablecer tu contraseña', '#0052cc'))
+    .catch((e) => { errEl.textContent = 'No se pudo enviar el correo: ' + e.message; });
+}
+
 function hacerLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass  = document.getElementById('loginPass').value;
@@ -439,7 +627,22 @@ function hacerLogin() {
     });
 }
 
-function cerrarSesion() { fbAuth.signOut(); }
+function _limpiarCamposLogin() {
+  const emailEl = document.getElementById('loginEmail');
+  const passEl  = document.getElementById('loginPass');
+  emailEl.value = '';
+  passEl.value = '';
+  passEl.type = 'password';
+  document.getElementById('pwToggle').textContent = '🙈';
+  // Truco extra: forzar un reflow tras un pequeño delay borra el autofill
+  // que algunos navegadores insertan justo después de cargar la página.
+  setTimeout(() => { emailEl.value = ''; passEl.value = ''; }, 60);
+}
+
+function cerrarSesion() {
+  fbAuth.signOut();
+  _limpiarCamposLogin();
+}
 
 fbAuth.onAuthStateChanged(async (fbUser) => {
   const loginOverlay = document.getElementById('loginOverlay');
@@ -450,6 +653,7 @@ fbAuth.onAuthStateChanged(async (fbUser) => {
     loginOverlay.classList.remove('hidden');
     document.getElementById('loginBtn').disabled = false;
     document.getElementById('loginBtn').textContent = '🛡️ Ingresar al Panel';
+    _limpiarCamposLogin();
     return;
   }
 
@@ -461,6 +665,7 @@ fbAuth.onAuthStateChanged(async (fbUser) => {
 
   loginOverlay.classList.add('hidden');
   app.classList.add('visible');
+  resetFormNuevoCliente();
   cargarLicencias();
 });
 
@@ -484,7 +689,7 @@ function licenciaEstadoInfo(lic) {
 // ── Cargar todas las licencias ────────────────────────────────
 async function cargarLicencias() {
   document.getElementById('tablaBody').innerHTML =
-    '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">Cargando licencias...</td></tr>';
+    '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">Cargando licencias...</td></tr>';
   try {
     const qs = await fbDb.collection(LICENCIAS_COL).get();
     _todasLasLicencias = qs.docs.map(d => ({ empresaId: d.id, ...d.data() }));
@@ -494,7 +699,7 @@ async function cargarLicencias() {
   } catch (e) {
     console.warn('Error cargando licencias:', e);
     document.getElementById('tablaBody').innerHTML =
-      '<tr><td colspan="5" style="text-align:center;color:#dc2626;padding:30px;">⚠️ No se pudieron cargar las licencias.</td></tr>';
+      '<tr><td colspan="6" style="text-align:center;color:#dc2626;padding:30px;">⚠️ No se pudieron cargar las licencias.</td></tr>';
   }
 }
 
@@ -502,10 +707,10 @@ function renderStats(lista) {
   const conteo = { activa:0, 'por-vencer':0, vencida:0, bloqueada:0 };
   lista.forEach(l => { const e = licenciaEstadoInfo(l).estado; if (conteo[e] !== undefined) conteo[e]++; });
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card"><div class="n">${lista.length}</div><div class="l">Empresas totales</div></div>
-    <div class="stat-card"><div class="n" style="color:#059669;">${conteo.activa}</div><div class="l">Activas</div></div>
-    <div class="stat-card"><div class="n" style="color:#d97706;">${conteo['por-vencer']}</div><div class="l">Por vencer</div></div>
-    <div class="stat-card"><div class="n" style="color:#dc2626;">${conteo.vencida + conteo.bloqueada}</div><div class="l">Vencidas / Bloqueadas</div></div>
+    <div class="stat-card" style="--accent:#b8860b;"><div class="n">${lista.length}</div><div class="l">Empresas totales</div></div>
+    <div class="stat-card" style="--accent:#059669;"><div class="n" style="color:#059669;">${conteo.activa}</div><div class="l">Activas</div></div>
+    <div class="stat-card" style="--accent:#d97706;"><div class="n" style="color:#d97706;">${conteo['por-vencer']}</div><div class="l">Por vencer</div></div>
+    <div class="stat-card" style="--accent:#dc2626;"><div class="n" style="color:#dc2626;">${conteo.vencida + conteo.bloqueada}</div><div class="l">Vencidas / Bloqueadas</div></div>
   `;
 }
 
@@ -530,12 +735,15 @@ function limpiarBusqueda() {
 function renderTabla(lista) {
   const body = document.getElementById('tablaBody');
   if (!lista.length) {
-    body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">No hay licencias que coincidan.</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:30px;">No hay licencias que coincidan.</td></tr>';
     return;
   }
   body.innerHTML = lista.map(lic => {
     const info = licenciaEstadoInfo(lic);
     const plan = PLANES_LICENCIA[lic.plan] || { label:lic.plan||'—', color:'#64748b', bg:'#f1f5f9' };
+    const activo = lic.activo !== false;
+    const diasTxt = (info.dias === null || info.dias === undefined) ? '—'
+      : (info.dias < 0 ? `${Math.abs(info.dias)}d vencida` : `${info.dias}d`);
     return `
       <tr>
         <td>
@@ -544,15 +752,60 @@ function renderTabla(lista) {
         </td>
         <td><span class="badge" style="background:${plan.bg};color:${plan.color};">${plan.label}</span></td>
         <td style="color:#475569;">${_fmtFechaCorta(lic.fechaVencimiento)}</td>
+        <td style="color:#64748b;font-size:12px;">${diasTxt}</td>
         <td><span class="badge" style="background:${info.bg};color:${info.color};">${info.label}</span></td>
         <td style="text-align:right;">
           <div class="row-actions">
-            <button class="btn" onclick="abrirModalEditar('${lic.empresaId}')">✏️ Editar</button>
+            <button class="btn-toggle ${activo ? 'is-on' : 'is-off'}" onclick="toggleActivoInline('${lic.empresaId}')">
+              ${activo ? '✅ Activo' : '🚫 Inactivo'}
+            </button>
+            <button class="btn-renovar" title="Renovar por el ciclo del plan" onclick="renovarRapido('${lic.empresaId}')">🔄 Renovar</button>
+            <button class="icon-btn" title="Editar en detalle" onclick="abrirModalEditar('${lic.empresaId}')">✏️</button>
             <button class="icon-btn" title="Eliminar licencia" onclick="abrirModalEliminar('${lic.empresaId}')">🗑️</button>
           </div>
         </td>
       </tr>`;
   }).join('');
+}
+
+// ── Acciones rápidas directas en la fila (sin modal) ─────────
+async function toggleActivoInline(empresaId) {
+  const lic = _todasLasLicencias.find(l => l.empresaId === empresaId);
+  if (!lic) return;
+  const nuevoActivo = !(lic.activo !== false);
+  try {
+    await fbDb.collection(LICENCIAS_COL).doc(empresaId).set(
+      { activo: nuevoActivo, actualizadoEn: new Date().toISOString() }, { merge: true });
+    lic.activo = nuevoActivo;
+    renderStats(_todasLasLicencias);
+    filtrarTabla(document.getElementById('buscador').value);
+    mostrarToast(nuevoActivo ? '✅ Cliente activado' : '🚫 Cliente desactivado', nuevoActivo ? '#059669' : '#dc2626');
+  } catch (e) {
+    console.warn('Error cambiando estado:', e);
+    mostrarToast('⚠️ No se pudo actualizar: ' + e.message, '#dc2626');
+  }
+}
+
+async function renovarRapido(empresaId) {
+  const lic = _todasLasLicencias.find(l => l.empresaId === empresaId);
+  if (!lic) return;
+  const dias = (PLANES_LICENCIA[lic.plan] && PLANES_LICENCIA[lic.plan].dias) || 30;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const vencActual = lic.fechaVencimiento ? new Date(lic.fechaVencimiento + 'T00:00:00') : hoy;
+  const desde = vencActual < hoy ? hoy : vencActual;
+  const nuevaFecha = new Date(desde.getTime() + dias * 86400000).toISOString().slice(0,10);
+  try {
+    await fbDb.collection(LICENCIAS_COL).doc(empresaId).set(
+      { fechaVencimiento: nuevaFecha, activo: true, actualizadoEn: new Date().toISOString() }, { merge: true });
+    lic.fechaVencimiento = nuevaFecha;
+    lic.activo = true;
+    renderStats(_todasLasLicencias);
+    filtrarTabla(document.getElementById('buscador').value);
+    mostrarToast(`🔄 Renovado hasta el ${_fmtFechaCorta(nuevaFecha)}`, '#059669');
+  } catch (e) {
+    console.warn('Error renovando licencia:', e);
+    mostrarToast('⚠️ No se pudo renovar: ' + e.message, '#dc2626');
+  }
 }
 
 // ── Modal editar ──────────────────────────────────────────────
@@ -648,6 +901,152 @@ async function confirmarEliminarLicencia() {
     console.warn('Error eliminando licencia:', e);
     mostrarToast('⚠️ No se pudo eliminar: ' + e.message, '#dc2626');
   }
+}
+
+// ══════════════════════════════════════════════════════════════
+// NUEVO CLIENTE — crea la cuenta de Firebase Auth y su licencia
+// en un solo paso, SIN cerrar tu sesión de administrador (usa la
+// API REST de Identity Toolkit en vez del SDK, igual que hace
+// index.html al crear empleados).
+// ══════════════════════════════════════════════════════════════
+async function _fbCrearCuentaSinSesion(email, password) {
+  const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + firebaseConfig.apiKey;
+  const res  = await fetch(url, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, returnSecureToken: false }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const msg = (data.error && data.error.message) || 'Error desconocido';
+    if (msg.indexOf('EMAIL_EXISTS') > -1)  throw new Error('Ese correo ya tiene una cuenta registrada.');
+    if (msg.indexOf('WEAK_PASSWORD') > -1) throw new Error('La contraseña debe tener al menos 6 caracteres.');
+    if (msg.indexOf('INVALID_EMAIL') > -1) throw new Error('El correo no es válido.');
+    throw new Error(msg);
+  }
+  return data.localId; // UID del nuevo usuario
+}
+
+let _ultimoClienteCreado = null; // { correo, password } — para el mensaje de WhatsApp
+
+function resetFormNuevoCliente() {
+  document.getElementById('ncEmpresa').value = '';
+  document.getElementById('ncCorreo').value = '';
+  document.getElementById('ncPassword').value = '';
+  document.getElementById('ncPassword').type = 'text';
+  document.getElementById('ncPwToggle').textContent = '🙉';
+  document.getElementById('ncPlan').value = 'trial';
+  document.getElementById('ncNotas').value = '';
+  document.getElementById('ncError').style.display = 'none';
+  _actualizarVencimientoNC();
+
+  document.getElementById('ncFormView').style.display = '';
+  document.getElementById('ncResultView').style.display = 'none';
+  _ultimoClienteCreado = null;
+}
+
+function toggleNcPassword() {
+  const input = document.getElementById('ncPassword');
+  const btn   = document.getElementById('ncPwToggle');
+  const oculto = input.type === 'password';
+  input.type = oculto ? 'text' : 'password';
+  btn.textContent = oculto ? '🙉' : '🙈';
+}
+
+function generarPasswordCliente() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  let pass = 'Tenlio';
+  for (let i = 0; i < 6; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('ncPassword').value = pass;
+  document.getElementById('ncPassword').type = 'text';
+  document.getElementById('ncPwToggle').textContent = '🙉';
+}
+
+function _actualizarVencimientoNC() {
+  const plan = document.getElementById('ncPlan').value;
+  const dias = (PLANES_LICENCIA[plan] && PLANES_LICENCIA[plan].dias) || 30;
+  const venc = new Date(Date.now() + dias * 86400000);
+  document.getElementById('ncVencimiento').value = venc.toISOString().slice(0,10);
+}
+
+function _extenderNC(dias) {
+  const input = document.getElementById('ncVencimiento');
+  const base = input.value ? new Date(input.value + 'T00:00:00') : new Date();
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const desde = base < hoy ? hoy : base;
+  const nueva = new Date(desde.getTime() + dias * 86400000);
+  input.value = nueva.toISOString().slice(0,10);
+}
+
+async function crearNuevoCliente() {
+  const empresaNombre = document.getElementById('ncEmpresa').value.trim();
+  const correo        = document.getElementById('ncCorreo').value.trim();
+  const password      = document.getElementById('ncPassword').value;
+  const plan           = document.getElementById('ncPlan').value;
+  const vencimiento    = document.getElementById('ncVencimiento').value;
+  const notas          = document.getElementById('ncNotas').value.trim();
+  const errEl = document.getElementById('ncError');
+  errEl.style.display = 'none';
+
+  if (!empresaNombre || !correo || !password || !vencimiento) {
+    errEl.textContent = '⚠️ Completa empresa, correo, contraseña y fecha de vencimiento.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (password.length < 6) {
+    errEl.textContent = '⚠️ La contraseña debe tener al menos 6 caracteres.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('ncCrearBtn');
+  btn.disabled = true; btn.textContent = '⏳ Creando...';
+
+  try {
+    const uid = await _fbCrearCuentaSinSesion(correo, password);
+
+    const hoy = new Date().toISOString().slice(0,10);
+    const nuevaLicencia = {
+      empresaId: uid,
+      empresaNombre, correoDueno: correo, plan,
+      activo: true,
+      fechaInicio: hoy,
+      fechaVencimiento: vencimiento,
+      notas: notas || '',
+      creadoEn: new Date().toISOString(),
+      actualizadoEn: new Date().toISOString(),
+    };
+    await fbDb.collection(LICENCIAS_COL).doc(uid).set(nuevaLicencia);
+
+    _todasLasLicencias.unshift({ empresaId: uid, ...nuevaLicencia });
+    renderStats(_todasLasLicencias);
+    renderTabla(_todasLasLicencias);
+
+    _ultimoClienteCreado = { empresaNombre, correo, password };
+    document.getElementById('ncResCorreo').textContent = correo;
+    document.getElementById('ncResPassword').textContent = password;
+    document.getElementById('ncFormView').style.display = 'none';
+    document.getElementById('ncResultView').style.display = 'flex';
+    mostrarToast('✅ Cliente creado correctamente', '#059669');
+  } catch (e) {
+    console.warn('Error creando cliente:', e);
+    errEl.textContent = '⚠️ ' + e.message;
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = '✅ Crear cliente';
+  }
+}
+
+function copiarMensajeWhatsapp() {
+  if (!_ultimoClienteCreado) return;
+  const { correo, password } = _ultimoClienteCreado;
+  const msg = `¡Hola! Ya está listo tu sistema TENLIO 🎉\n\n` +
+    `🔗 Enlace: https://evermestra23.github.io/sistema-ventas/\n` +
+    `📧 Correo: ${correo}\n` +
+    `🔑 Contraseña temporal: ${password}\n\n` +
+    `Te recomiendo cambiar la contraseña la primera vez que entres, desde el menú de tu usuario → Configuración.`;
+  navigator.clipboard.writeText(msg)
+    .then(() => mostrarToast('📋 Mensaje copiado, listo para pegar en WhatsApp', '#059669'))
+    .catch(() => mostrarToast('⚠️ No se pudo copiar automáticamente', '#dc2626'));
 }
 </script>
 </body>
