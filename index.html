@@ -1926,17 +1926,6 @@ tbody tr:hover{background:#f8fafc;}
 .auth-forgot a::before { content:'🔑'; font-size:12px; }
 .auth-forgot a:hover { color:#8cb8ff; text-decoration:underline; }
 
-/* Protected access footer note */
-.auth-protected-note {
-  display:flex; align-items:flex-start; gap:9px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px; padding:12px 14px;
-  font-size:11.5px; color:#7c93b8; line-height:1.55;
-  font-family:'Plus Jakarta Sans',sans-serif;
-}
-.auth-protected-note .apn-ico { font-size:14px; flex-shrink:0; }
-
 /* Remember me */
 .auth-remember {
   display:flex; align-items:center; gap:8px;
@@ -2287,11 +2276,6 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
 
       <div class="auth-forgot" style="margin-top:16px;">
         <a onclick="authForgotPassword()">¿Olvidaste tu contraseña?</a>
-      </div>
-
-      <div class="auth-protected-note">
-        <span class="apn-ico">🔒</span>
-        <span>Acceso protegido. Contacta al administrador si olvidaste tu contraseña.</span>
       </div>
     </div>
 
@@ -5470,6 +5454,18 @@ function abrirModalEditarCuenta() {
             onfocus="this.style.borderColor='#0052cc'" onblur="this.style.borderColor='#e2e8f0'">
         </div>
 
+        <div style="margin-bottom:14px;" id="_editPwActualWrap">
+          <label style="display:block;font-size:11px;font-weight:700;color:#374151;
+                        text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">
+            Contraseña actual
+            <span style="color:#94a3b8;font-weight:400;text-transform:none;">(solo si vas a poner una nueva)</span>
+          </label>
+          <input id="_editPwActual" type="password" placeholder="Tu contraseña actual" autocomplete="off"
+            style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
+                   font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;"
+            onfocus="this.style.borderColor='#0052cc'" onblur="this.style.borderColor='#e2e8f0'">
+        </div>
+
         <div style="margin-bottom:20px;">
           <label style="display:block;font-size:11px;font-weight:700;color:#374151;
                         text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;">
@@ -5477,7 +5473,7 @@ function abrirModalEditarCuenta() {
             <span style="color:#94a3b8;font-weight:400;text-transform:none;">(dejar vacío para no cambiar)</span>
           </label>
           <div style="position:relative;">
-            <input id="_editPw" type="password" placeholder="••••••••"
+            <input id="_editPw" type="password" placeholder="••••••••" autocomplete="off"
               style="width:100%;padding:10px 40px 10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;
                      font-size:14px;font-family:inherit;color:#0f172a;box-sizing:border-box;outline:none;"
               onfocus="this.style.borderColor='#0052cc'" onblur="this.style.borderColor='#e2e8f0'">
@@ -5524,38 +5520,73 @@ function abrirModalEditarCuenta() {
   _crearOverlay('dynModalEditarCuenta', html);
 }
 
-function guardarEditarCuenta() {
+async function guardarEditarCuenta() {
   const sess     = _getSession();
   const allUsers = _getUsers();
   const user     = allUsers.find(function(u){ return u.id === (sess||{}).id; });
   const fErr     = document.getElementById('_editErr');
 
   if (!user) { alert('Sesión inválida.'); return; }
-  if (fErr) fErr.style.display = 'none';
+  if (fErr) { fErr.style.display = 'none'; fErr.textContent = ''; }
 
-  const nombre  = (document.getElementById('_editNombre')  ? document.getElementById('_editNombre').value  : '').trim();
-  const empresa = (document.getElementById('_editEmpresa') ? document.getElementById('_editEmpresa').value : '').trim();
-  const pw      =  document.getElementById('_editPw')      ? document.getElementById('_editPw').value       : '';
+  const nombre    = (document.getElementById('_editNombre')  ? document.getElementById('_editNombre').value  : '').trim();
+  const empresa   = (document.getElementById('_editEmpresa') ? document.getElementById('_editEmpresa').value : '').trim();
+  const pwNueva   =  document.getElementById('_editPw')       ? document.getElementById('_editPw').value       : '';
+  const pwActual  =  document.getElementById('_editPwActual') ? document.getElementById('_editPwActual').value : '';
 
   if (!nombre) {
     if (fErr) { fErr.textContent = '⚠️ El nombre no puede estar vacío.'; fErr.style.display = 'block'; }
     return;
   }
-  if (pw && pw.length < 6) {
-    if (fErr) { fErr.textContent = '⚠️ La contraseña debe tener al menos 6 caracteres.'; fErr.style.display = 'block'; }
-    return;
+
+  // Si el usuario quiere poner una contraseña nueva, cambiarla DE VERDAD en Firebase Auth
+  // (no solo en el registro local), reautenticando primero con la contraseña actual.
+  if (pwNueva) {
+    if (pwNueva.length < 6) {
+      if (fErr) { fErr.textContent = '⚠️ La contraseña nueva debe tener al menos 6 caracteres.'; fErr.style.display = 'block'; }
+      return;
+    }
+    if (!pwActual) {
+      if (fErr) { fErr.textContent = '⚠️ Escribe tu contraseña actual para poder cambiarla.'; fErr.style.display = 'block'; }
+      return;
+    }
+
+    const btnGuardar = document.querySelector('#dynModalEditarCuenta button[onclick="guardarEditarCuenta()"]');
+    if (btnGuardar) { btnGuardar.disabled = true; btnGuardar.textContent = '⏳ Verificando...'; }
+
+    try {
+      const fbUser = fbAuth.currentUser;
+      const cred = firebase.auth.EmailAuthProvider.credential(fbUser.email, pwActual);
+      await fbUser.reauthenticateWithCredential(cred);
+      await fbUser.updatePassword(pwNueva);
+    } catch (e) {
+      if (fErr) {
+        if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+          fErr.textContent = '⚠️ Tu contraseña actual no es correcta.';
+        } else if (e.code === 'auth/weak-password') {
+          fErr.textContent = '⚠️ La contraseña nueva es muy débil, usa al menos 6 caracteres.';
+        } else if (e.code === 'auth/requires-recent-login') {
+          fErr.textContent = '⚠️ Por seguridad, cierra sesión y vuelve a entrar antes de cambiar tu contraseña.';
+        } else {
+          fErr.textContent = '⚠️ No se pudo cambiar la contraseña: ' + e.message;
+        }
+        fErr.style.display = 'block';
+      }
+      if (btnGuardar) { btnGuardar.disabled = false; btnGuardar.textContent = '💾 Guardar cambios'; }
+      return;
+    }
+    if (btnGuardar) { btnGuardar.disabled = false; btnGuardar.textContent = '💾 Guardar cambios'; }
   }
 
   user.nombre  = nombre;
   user.empresa = empresa;
-  if (pw) user.password = _hashPw(pw);
   _saveUsers(allUsers);
   _actualizarTopbarUser(user);
   _actualizarPanelUsuarios();
 
   const modal = document.getElementById('dynModalEditarCuenta');
   if (modal) modal.remove();
-  setTimeout(function(){ mostrarToast('✅ Cuenta actualizada correctamente', '#059669'); }, 50);
+  setTimeout(function(){ mostrarToast(pwNueva ? '✅ Cuenta y contraseña actualizadas' : '✅ Cuenta actualizada correctamente', '#059669'); }, 50);
 }
 
 // ── MODAL: PERMISOS DE USUARIO ────────────────────────────────
@@ -6084,7 +6115,13 @@ function _marcaLogo()   { return MARCA_LOGO || LOGO_B64; }
 function _marcaFirma()  { return MARCA_FIRMA || ''; }
 let ventaPagoActual = null;
 let _ultimoGuardado = null;
-const STORAGE_KEY = 'tenlio_v8';
+// La clave de caché local se aísla POR EMPRESA (EMPRESA_ID), para que si dos
+// cuentas de clientes distintas inician sesión en el mismo navegador/PC,
+// jamás compartan ni hereden los datos de ventas del otro.
+function _storageKey() {
+  const id = EMPRESA_ID || (fbAuth.currentUser && fbAuth.currentUser.uid) || 'anon';
+  return 'tenlio_v8_' + id;
+}
 
 // ═══════════════════════════════════════════════
 // PERSISTENCIA: Firestore (nube) + localStorage (caché local)
@@ -6100,7 +6137,7 @@ function _snapshot() {
 // para no disparar una escritura a la nube por cada tecla/click.
 function guardarDatos() {
   const snap = _snapshot();
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snap)); } catch(e) {}
+  try { localStorage.setItem(_storageKey(), JSON.stringify(snap)); } catch(e) {}
   _ultimoGuardado = new Date();
   actualizarStatusBar();
 
@@ -6122,11 +6159,11 @@ async function cargarDatosDesdeNube() {
   const doc = await FB_DOC().get();
   if (doc.exists) {
     _aplicarSnapshot(doc.data());
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc.data())); } catch(e) {}
+    try { localStorage.setItem(_storageKey(), JSON.stringify(doc.data())); } catch(e) {}
     return true;
   }
   // No hay nada en la nube aún — usar caché local si existe (primer arranque)
-  const d = localStorage.getItem(STORAGE_KEY);
+  const d = localStorage.getItem(_storageKey());
   if (d) {
     _aplicarSnapshot(JSON.parse(d));
     guardarDatos(); // sube esa primera versión a la nube
@@ -6145,7 +6182,7 @@ function iniciarSincronizacionTiempoReal() {
     if (remoto.ts && remoto.ts === _ultimoTsAplicado) return; // ya lo tenemos
     _ultimoTsAplicado = remoto.ts;
     _aplicarSnapshot(remoto);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(remoto)); } catch(e) {}
+    try { localStorage.setItem(_storageKey(), JSON.stringify(remoto)); } catch(e) {}
     actualizarResumen(); actualizarTablas(); actualizarStatusBar();
     try { renderDashboard(); } catch(e) {}
     mostrarToast('🔄 Datos actualizados desde otro dispositivo', '#0052cc');
@@ -6154,7 +6191,7 @@ function iniciarSincronizacionTiempoReal() {
 let _ultimoTsAplicado = null;
 
 function cargarDatos() {
-  const d = localStorage.getItem(STORAGE_KEY);
+  const d = localStorage.getItem(_storageKey());
   if (d) {
     _aplicarSnapshot(JSON.parse(d));
     return true;
@@ -6211,7 +6248,7 @@ function guardarSesion() {
   const nombre = `TENLIO_sesion_${fecha}.tenlio`;
 
   // También actualizar localStorage
-  try { localStorage.setItem(STORAGE_KEY, json); } catch(e) {}
+  try { localStorage.setItem(_storageKey(), json); } catch(e) {}
 
   // Descargar el archivo
   const blob = new Blob([json], { type: 'application/json' });
@@ -6225,7 +6262,7 @@ function guardarSesion() {
   mostrarToast('💾 Sesión guardada — ' + nombre, '#00875a');
 
   // Guardar nombre del último archivo en localStorage
-  try { localStorage.setItem(STORAGE_KEY + '_lastfile', nombre); } catch(e) {}
+  try { localStorage.setItem(_storageKey() + '_lastfile', nombre); } catch(e) {}
 }
 
 // ── Cargar desde archivo .tenlio (botón en topbar) ──
@@ -6305,12 +6342,12 @@ function actualizarStatusBar(msgOverride) {
 
 // ── Guardar automático cada 60 segundos en localStorage ──
 setInterval(() => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_snapshot())); } catch(e) {}
+  try { localStorage.setItem(_storageKey(), JSON.stringify(_snapshot())); } catch(e) {}
 }, 60000);
 
 // ── Guardar antes de cerrar la pestaña ──
 window.addEventListener('beforeunload', () => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_snapshot())); } catch(e) {}
+  try { localStorage.setItem(_storageKey(), JSON.stringify(_snapshot())); } catch(e) {}
 });
 
 // ── Modal de bienvenida ──
@@ -11409,7 +11446,7 @@ function guardarCambios() {
     try {
       // 1. Guardar en localStorage (silencioso, siempre)
       const snap = _snapshot();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(snap));
+      localStorage.setItem(_storageKey(), JSON.stringify(snap));
       _ultimoGuardado = new Date();
       actualizarStatusBar();
 
@@ -11422,7 +11459,7 @@ function guardarCambios() {
       const a      = document.createElement('a');
       a.href = url; a.download = nombre; a.click();
       URL.revokeObjectURL(url);
-      try { localStorage.setItem(STORAGE_KEY + '_lastfile', nombre); } catch(e) {}
+      try { localStorage.setItem(_storageKey() + '_lastfile', nombre); } catch(e) {}
 
       // Estado: guardado ✓
       btn.classList.remove('saving');
