@@ -4727,6 +4727,21 @@ let ES_MASTER = false;      // true solo cuando inicia sesión la cuenta maestra
 const LICENCIAS_COL = 'licencias';
 const FB_LIC = (empresaId) => fbDb.collection(LICENCIAS_COL).doc(empresaId || EMPRESA_ID);
 let LICENCIA_ACTUAL = null; // documento de licencia de la empresa de la sesión actual
+
+// ── Límites y funciones reales por plan de licencia ─────────
+// (la cuenta maestra siempre queda exenta, ver _limitesPlanActual)
+const PLANES_LIMITES = {
+  trial:   { maxUsuarios: 1,        maxProductos: 30,        marcaPersonalizada: false, reportes: false },
+  basico:  { maxUsuarios: 1,        maxProductos: 50,        marcaPersonalizada: false, reportes: true  },
+  pro:     { maxUsuarios: 5,        maxProductos: Infinity,  marcaPersonalizada: true,  reportes: true  },
+  premium: { maxUsuarios: Infinity, maxProductos: Infinity,  marcaPersonalizada: true,  reportes: true  },
+};
+
+function _limitesPlanActual() {
+  if (ES_MASTER) return PLANES_LIMITES.premium; // la cuenta maestra nunca tiene restricciones
+  const plan = (LICENCIA_ACTUAL && LICENCIA_ACTUAL.plan) || 'trial';
+  return PLANES_LIMITES[plan] || PLANES_LIMITES.trial;
+}
 </script>
 
 <script>
@@ -4971,10 +4986,18 @@ function _verificarAccesoPanel(panelId) {
     'ventas-activas': 'verActivas',
   };
   const perm = PANEL_PERM[panelId];
-  if (!perm) return true;  // sin restricción definida
-  if (_tienePermiso(perm)) return true;
-  mostrarToast('🚫 No tienes permiso para acceder a esta sección', '#dc2626');
-  return false;
+  if (perm && !_tienePermiso(perm)) {
+    mostrarToast('🚫 No tienes permiso para acceder a esta sección', '#dc2626');
+    return false;
+  }
+
+  // ── Guardia de acceso por plan: los reportes requieren plan Pro o Premium ──
+  if ((panelId === 'reporte-cuotas' || panelId === 'reporte-mensual') && !_limitesPlanActual().reportes) {
+    mostrarToast('🔒 Los reportes están disponibles con un plan pago (Básico en adelante). Habla con tu proveedor para activar tu suscripción.', '#d97706');
+    return false;
+  }
+
+  return true;
 }
 
 // ── Email availability checker ───────────────────────────
@@ -5279,7 +5302,8 @@ function _actualizarPanelUsuarios() {
 
   const users = _getUsers();
   const cnt   = document.getElementById('cntUsuarios');
-  if(cnt) cnt.textContent = users.length;
+  const limiteUsuarios = _limitesPlanActual().maxUsuarios;
+  if(cnt) cnt.textContent = (limiteUsuarios === Infinity) ? users.length : `${users.length}/${limiteUsuarios}`;
   const btnNuevo = document.getElementById('btnNuevoUsuario');
   if(btnNuevo) btnNuevo.style.display = esDueno ? '' : 'none';
   const list  = document.getElementById('usuariosList');
@@ -5888,6 +5912,12 @@ async function guardarNuevoUsuario() {
   if (!correo || !correo.includes('@')) { _nuError('⚠️ Escribe un correo válido.'); return; }
   if (!pw || pw.length < 6)             { _nuError('⚠️ La contraseña debe tener al menos 6 caracteres.'); return; }
   if (_getUsers().some(function(u){ return u.correo === correo; })) { _nuError('⚠️ Ya existe un usuario con ese correo en tu equipo.'); return; }
+
+  const limiteUsuarios = _limitesPlanActual().maxUsuarios;
+  if (_getUsers().length >= limiteUsuarios) {
+    _nuError(`🔒 Tu plan actual permite máximo ${limiteUsuarios} usuario${limiteUsuarios===1?'':'s'}. Habla con tu proveedor para mejorar tu plan y agregar más.`);
+    return;
+  }
 
   if (btn) { btn.disabled = true; btn.textContent = 'Creando cuenta...'; }
 
@@ -6952,6 +6982,11 @@ function quitarFirmaNegocio() {
 }
 
 function guardarMarcaNegocio() {
+  if (!_limitesPlanActual().marcaPersonalizada) {
+    mostrarToast('🔒 La marca personalizada (nombre, logo y firma) está disponible desde el plan Pro. Habla con tu proveedor para mejorar tu plan.', '#d97706');
+    return;
+  }
+
   const nombre = (document.getElementById('cfg_marca_nombre').value || '').trim();
   const fileEl = document.getElementById('cfg_marca_logo_file');
   const nuevoLogo = fileEl && fileEl.dataset.b64 ? fileEl.dataset.b64 : null;
@@ -9396,6 +9431,11 @@ function guardarProductoInventario() {
     if (p) { Object.assign(p, { referencia: ref, marca, talla, color, costo, precio, stock, stockMin }); }
     mostrarToast(`✅ Producto "${ref}" actualizado`, '#00875a');
   } else {
+    const limiteProductos = _limitesPlanActual().maxProductos;
+    if (inventario.length >= limiteProductos) {
+      mostrarToast(`🔒 Tu plan actual permite máximo ${limiteProductos} productos en inventario. Habla con tu proveedor para mejorar tu plan.`, '#d97706');
+      return;
+    }
     inventario.push({ id: Date.now(), referencia: ref, marca, talla, color, costo, precio, stock, stockMin, fechaIngreso: _hoyStr() });
     mostrarToast(`✅ Producto "${ref}" agregado al inventario`, '#00875a');
   }
@@ -9450,6 +9490,16 @@ function ajustarStockInventario(id, delta) {
 function renderInventario() {
   const body = document.getElementById('inventarioBody');
   if (!body) return;
+
+  // Mostrar cuántos productos lleva usados contra el límite de su plan
+  const tituloEl = document.getElementById('inv_form_titulo');
+  const editId    = document.getElementById('inv_edit_id');
+  if (tituloEl && editId && !editId.value) {
+    const limiteProductos = _limitesPlanActual().maxProductos;
+    const sufijo = (limiteProductos === Infinity) ? '' : ` (${inventario.length}/${limiteProductos})`;
+    tituloEl.textContent = '➕ Agregar Producto al Inventario' + sufijo;
+  }
+
   const q = (document.getElementById('inv_buscar')?.value || '').toLowerCase().trim();
 
   let lista = inventario.slice();
