@@ -760,6 +760,7 @@ function renderTabla(lista) {
               ${activo ? '✅ Activo' : '🚫 Inactivo'}
             </button>
             <button class="btn-renovar" title="Renovar por el ciclo del plan" onclick="renovarRapido('${lic.empresaId}')">🔄 Renovar</button>
+            <button class="icon-btn" title="Enviarle correo para restablecer su contraseña" onclick="enviarResetPassword('${lic.empresaId}')">🔑</button>
             <button class="icon-btn" title="Editar en detalle" onclick="abrirModalEditar('${lic.empresaId}')">✏️</button>
             <button class="icon-btn" title="Eliminar licencia" onclick="abrirModalEliminar('${lic.empresaId}')">🗑️</button>
           </div>
@@ -783,6 +784,23 @@ async function toggleActivoInline(empresaId) {
   } catch (e) {
     console.warn('Error cambiando estado:', e);
     mostrarToast('⚠️ No se pudo actualizar: ' + e.message, '#dc2626');
+  }
+}
+
+// ── Enviar correo real de restablecimiento de contraseña a un cliente ──
+// Útil cuando el cliente te llama diciendo que olvidó su clave: tú le
+// mandas el correo desde aquí, sin necesitar ver ni saber su contraseña
+// (Firebase nunca la guarda de forma recuperable, por seguridad).
+async function enviarResetPassword(empresaId) {
+  const lic = _todasLasLicencias.find(l => l.empresaId === empresaId);
+  if (!lic || !lic.correoDueno) { mostrarToast('⚠️ No se encontró el correo de este cliente.', '#dc2626'); return; }
+
+  try {
+    await fbAuth.sendPasswordResetEmail(lic.correoDueno);
+    mostrarToast(`📧 Correo de restablecimiento enviado a ${lic.correoDueno}`, '#0052cc');
+  } catch (e) {
+    console.warn('Error enviando correo de restablecimiento:', e);
+    mostrarToast('⚠️ No se pudo enviar el correo: ' + e.message, '#dc2626');
   }
 }
 
