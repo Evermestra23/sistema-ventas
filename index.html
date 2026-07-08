@@ -10925,13 +10925,13 @@ async function _renderFactura(v) {
     <div style="border:1px solid #dde3ee;border-radius:10px;overflow:hidden;flex-shrink:0;">
       <table style="width:100%;border-collapse:collapse;">
         <thead>
-          <tr style="background:linear-gradient(90deg,#1d4ed8,#2563eb);">
-            <th style="padding:10px 14px;font-size:9.5px;font-weight:800;color:#fff;text-align:left;text-transform:uppercase;letter-spacing:1px;">Descripci\u00f3n del Producto</th>
-            <th style="padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:center;text-transform:uppercase;letter-spacing:1px;">Talla</th>
-            <th style="padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:center;text-transform:uppercase;letter-spacing:1px;">Cant.</th>
-            <th style="padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:right;text-transform:uppercase;letter-spacing:1px;">P. Unitario</th>
-            ${tieneDesc ? `<th style="padding:10px 12px;font-size:9.5px;font-weight:800;color:#fde68a;text-align:right;text-transform:uppercase;letter-spacing:1px;">Descuento</th>` : ''}
-            <th style="padding:10px 14px;font-size:9.5px;font-weight:800;color:#bfdbfe;text-align:right;text-transform:uppercase;letter-spacing:1px;">Total</th>
+          <tr>
+            <th style="background:#1d4ed8;padding:10px 14px;font-size:9.5px;font-weight:800;color:#fff;text-align:left;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">Descripci\u00f3n del Producto</th>
+            <th style="background:#1d4ed8;padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:center;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">Talla</th>
+            <th style="background:#1d4ed8;padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:center;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">Cant.</th>
+            <th style="background:#1d4ed8;padding:10px 12px;font-size:9.5px;font-weight:800;color:#fff;text-align:right;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">P. Unitario</th>
+            ${tieneDesc ? `<th style="background:#1d4ed8;padding:10px 12px;font-size:9.5px;font-weight:800;color:#fde68a;text-align:right;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">Descuento</th>` : ''}
+            <th style="background:#1d4ed8;padding:10px 14px;font-size:9.5px;font-weight:800;color:#bfdbfe;text-align:right;text-transform:uppercase;letter-spacing:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">Total</th>
           </tr>
         </thead>
         <tbody>
