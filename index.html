@@ -1900,13 +1900,13 @@ tbody tr:hover{background:#f8fafc;}
 /* Password wrap */
 .auth-pw-wrap { position:relative; }
 .auth-pw-wrap .auth-input-ico { left:14px; }
-.auth-pw-wrap input { padding-left:40px; padding-right:52px; }
+.auth-pw-wrap input { padding-left:40px; padding-right:48px; }
 .auth-pw-eye {
   position:absolute; right:10px; top:50%;
   transform:translateY(-50%);
   background:none; border:none; cursor:pointer;
-  font-size:26px; color:#5b7092;
-  width:36px; height:36px;
+  font-size:20px; color:#5b7092;
+  width:32px; height:32px;
   display:flex;align-items:center;justify-content:center;
   border-radius:8px; transition:background 0.15s;
   line-height:1;
@@ -4750,7 +4750,14 @@ function _limitesPlanActual() {
 // MÓDULO DE AUTENTICACIÓN Y USUARIOS — TENLIO v11
 // Roles: dueno | admin | empleado | cliente
 // ═══════════════════════════════════════════════════════════
-const USERS_KEY   = 'tenlio_users_v1';
+// La lista de usuarios/equipo también se aísla POR EMPRESA (EMPRESA_ID),
+// exactamente igual que _storageKey() — así ninguna empresa ve ni hereda
+// la lista de usuarios de otra empresa que haya iniciado sesión antes
+// en el mismo navegador.
+function _usersKey() {
+  const id = EMPRESA_ID || (fbAuth.currentUser && fbAuth.currentUser.uid) || 'anon';
+  return 'tenlio_users_v1_' + id;
+}
 const SESSION_KEY = 'tenlio_session_v1';
 
 // ── Preguntas de seguridad ────────────────────────────────
@@ -4821,8 +4828,8 @@ const PLANES_LICENCIA = {
 const DIAS_ALERTA_VENCIMIENTO = 5; // a partir de cuántos días restantes se muestra "por vencer"
 
 // ── Helpers de almacenamiento ─────────────────────────────
-function _getUsers()    { try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e) { return []; } }
-function _saveUsers(u)  { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function _getUsers()    { try { return JSON.parse(localStorage.getItem(_usersKey()) || '[]'); } catch(e) { return []; } }
+function _saveUsers(u)  { localStorage.setItem(_usersKey(), JSON.stringify(u)); }
 
 // ══════════════════════════════════════════════════════════════
 // MULTIEMPRESA — resuelve a qué "empresa" (dueño) pertenece cada
