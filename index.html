@@ -2584,6 +2584,7 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
     <button class="nav-item" data-label="Retiros"          onclick="showPanel('retiros',this)"><span class="ni">💰</span><span class="nlabel">Retiros</span></button>
     <button class="nav-item" data-label="Flete y Acarreos" onclick="showPanel('fletes',this)"><span class="ni">🚚</span><span class="nlabel">Flete y Acarreos</span></button>
     <button class="nav-item" data-label="Gastos Operativos"onclick="showPanel('gastos',this)"><span class="ni">🛍️</span><span class="nlabel">Gastos Operativos</span></button>
+    <button class="nav-item" data-label="Capital de Socios" onclick="showPanel('socios',this)"><span class="ni">🤝</span><span class="nlabel">Capital de Socios</span></button>
     <button class="nav-item" data-label="Informes"         onclick="showPanel('informe',this)"><span class="ni">📊</span><span class="nlabel">Informes</span></button>
     <button class="nav-item" data-label="Reporte Cuotas"   onclick="showPanel('reporte-cuotas',this)"><span class="ni">🧾</span><span class="nlabel">Reporte Cuotas</span></button>
     <button class="nav-item" data-label="Reporte Mensual"  onclick="showPanel('reporte-mensual',this)"><span class="ni">📅</span><span class="nlabel">Reporte Mensual</span></button>
@@ -3229,6 +3230,50 @@ function authSelPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(fun
         </table>
       </div>
       <div style="margin-top:14px;"><button class="btn-success" onclick="exportarGastos()">📥 Exportar Gastos a Excel</button></div>
+    </div>
+
+    <!-- ════ PANEL: CAPITAL DE SOCIOS (informativo) ════ -->
+    <div id="panel-socios" class="panel">
+      <div class="page-header"><span class="page-title">🤝 Capital de Socios</span></div>
+
+      <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px solid #93c5fd;border-radius:10px;
+                  padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+        <div style="font-size:22px;">ℹ️</div>
+        <div style="font-size:12.5px;color:#1e3a8a;line-height:1.5;">
+          Este registro es <strong>solo informativo</strong>: lleva la cuenta de cuánto ha aportado cada socio
+          para la compra de zapatos. <strong>No se mezcla ni afecta</strong> el "Capital Disponible" que ya
+          maneja el sistema para las operaciones del negocio.
+        </div>
+      </div>
+
+      <!-- KPI total -->
+      <div class="metrics" style="grid-template-columns:1fr;margin-bottom:22px;">
+        <div class="mc" style="background:linear-gradient(135deg,#0a1628,#1e3a5f);border:none;">
+          <div class="mc-icon" style="color:#d4af5a;">🤝</div>
+          <div class="mc-label" style="color:rgba(255,255,255,0.65);">Capital Total Aportado por Socios</div>
+          <div class="mc-val" id="socios_totalGeneral" style="color:#fff;">$0</div>
+          <div class="mc-sub" style="color:rgba(255,255,255,0.5);">Suma de todos los socios · informativo</div>
+        </div>
+      </div>
+
+      <!-- Formulario nuevo socio -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-head"><h3>➕ Registrar Nuevo Socio</h3></div>
+        <div class="g2">
+          <div class="fg"><label>Nombre del Socio</label>
+            <input type="text" id="socio_nombre" placeholder="Ej: Narlys">
+          </div>
+          <div class="fg"><label>Aporte Inicial ($) <span style="font-weight:400;color:var(--muted-2,#94a3b8);">(opcional)</span></label>
+            <input type="number" id="socio_aporteInicial" placeholder="Ej: 2000000" min="0">
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn" style="background:linear-gradient(135deg,#0a1628,#1e3a5f);" onclick="agregarSocio()">🤝 Registrar Socio</button>
+        </div>
+      </div>
+
+      <!-- Lista de socios -->
+      <div id="socios_lista" style="display:flex;flex-direction:column;gap:14px;"></div>
     </div>
 
     <!-- ════ PANEL: FLETES ════ -->
@@ -4790,6 +4835,7 @@ const PERMISOS_DEF = [
   { key:'opRetiros',       label:'Operar Ganancias',           desc:'Retirar, reinvertir y manejar capital recuperable',grupo:'Finanzas' },
   { key:'verFletes',       label:'Ver Fletes',                 desc:'Acceso al panel de flete y acarreos',             grupo:'Finanzas' },
   { key:'verGastos',       label:'Ver Gastos Operativos',      desc:'Acceso al panel de gastos operativos',            grupo:'Finanzas' },
+  { key:'verSocios',       label:'Ver Capital de Socios',      desc:'Acceso al registro informativo de aportes de socios', grupo:'Finanzas' },
   { key:'verInformes',     label:'Ver Informes',               desc:'Acceso a reportes e informes financieros',        grupo:'Finanzas' },
   // Sistema
   { key:'verConfig',       label:'Configuración del Sistema',  desc:'Acceso al panel de configuración',                grupo:'Sistema' },
@@ -4803,17 +4849,17 @@ const PERMISOS_ROL = {
   dueno: Object.fromEntries(PERMISOS_DEF.map(p => [p.key, true])),  // Dueño: todo activo
   admin: {
     nuevaVenta:true, registrarPago:true, verHistorial:true, verActivas:true, eliminarVenta:false,
-    verRetiros:false, opRetiros:false, verFletes:true, verGastos:true, verInformes:true,
+    verRetiros:false, opRetiros:false, verFletes:true, verGastos:true, verSocios:false, verInformes:true,
     verConfig:false, resetSistema:false, verUsuarios:false, cambiarRoles:false,
   },
   empleado: {
     nuevaVenta:true, registrarPago:true, verHistorial:false, verActivas:true, eliminarVenta:false,
-    verRetiros:false, opRetiros:false, verFletes:false, verGastos:false, verInformes:false,
+    verRetiros:false, opRetiros:false, verFletes:false, verGastos:false, verSocios:false, verInformes:false,
     verConfig:false, resetSistema:false, verUsuarios:false, cambiarRoles:false,
   },
   cliente: {
     nuevaVenta:false, registrarPago:false, verHistorial:false, verActivas:false, eliminarVenta:false,
-    verRetiros:false, opRetiros:false, verFletes:false, verGastos:false, verInformes:false,
+    verRetiros:false, opRetiros:false, verFletes:false, verGastos:false, verSocios:false, verInformes:false,
     verConfig:false, resetSistema:false, verUsuarios:false, cambiarRoles:false,
   },
 };
@@ -4984,6 +5030,7 @@ function _verificarAccesoPanel(panelId) {
     retiros:        'verRetiros',
     fletes:         'verFletes',
     gastos:         'verGastos',
+    socios:         'verSocios',
     informe:        'verInformes',
     'reporte-cuotas': 'verInformes',
     'reporte-mensual': 'verInformes',
@@ -6008,6 +6055,7 @@ function _aplicarPermisos(user) {
     { panel:'retiros',         perm:'verRetiros'   },
     { panel:'fletes',          perm:'verFletes'    },
     { panel:'gastos',          perm:'verGastos'    },
+    { panel:'socios',          perm:'verSocios'    },
     { panel:'informe',         perm:'verInformes'  },
     { panel:'reporte-cuotas',  perm:'verInformes'  },
     { panel:'reporte-mensual', perm:'verInformes'  },
@@ -6144,6 +6192,9 @@ let cierresMensuales = {};
 let costoPredGlobal = 0, ventaPredGlobal = 0;
 let vendedores = [], recordatorios = [], cumpleanos = [];
 let inventario = [];
+// ── Capital aportado por socios (registro informativo, NO se mezcla
+//    ni afecta el Capital Disponible operativo del sistema) ──
+let socios = []; // { id, nombre, aportes: [{id, monto, fecha, nota}] }
 // ── Marca del negocio (personalizable por cada empresa/cliente) ──
 let MARCA_NOMBRE = null;
 let MARCA_LOGO   = null;
@@ -6166,7 +6217,7 @@ function _storageKey() {
 // ═══════════════════════════════════════════════
 
 function _snapshot() {
-  return { capital, ganancias, gananciaHistoricaTotal, capitalRecuperable, ventas, historial, retiros, fletes, gastos, costoPredGlobal, ventaPredGlobal, vendedores, recordatorios, cumpleanos, inventario, marcaNombre: MARCA_NOMBRE, marcaLogo: MARCA_LOGO, marcaFirma: MARCA_FIRMA, cierresMensuales: (typeof cierresMensuales !== 'undefined' ? cierresMensuales : {}), version: 11, ts: Date.now(),
+  return { capital, ganancias, gananciaHistoricaTotal, capitalRecuperable, ventas, historial, retiros, fletes, gastos, costoPredGlobal, ventaPredGlobal, vendedores, recordatorios, cumpleanos, inventario, socios, marcaNombre: MARCA_NOMBRE, marcaLogo: MARCA_LOGO, marcaFirma: MARCA_FIRMA, cierresMensuales: (typeof cierresMensuales !== 'undefined' ? cierresMensuales : {}), version: 11, ts: Date.now(),
     // ── Cuentas de usuario incluidas en el archivo ──────────────────
     _usuarios: _getUsers() };
 }
@@ -6252,6 +6303,7 @@ function _aplicarSnapshot(p) {
   recordatorios          = p.recordatorios         ?? [];
   cumpleanos             = p.cumpleanos            ?? [];
   inventario             = p.inventario            ?? [];
+  socios                 = p.socios                ?? [];
   MARCA_NOMBRE           = p.marcaNombre           ?? null;
   MARCA_LOGO             = p.marcaLogo             ?? null;
   MARCA_FIRMA            = p.marcaFirma            ?? null;
@@ -6447,6 +6499,7 @@ function showPanel(id, btn) {
   if (id === 'informe')        actualizarResumenPeriodo();
   if (id === 'fletes')         actualizarTablaFletes();
   if (id === 'gastos')         { renderGastos(); const gf=document.getElementById('gasto_fecha'); if(gf&&!gf.value) gf.value=_hoyStr(); }
+  if (id === 'socios')         renderSocios();
   if (id === 'reporte-cuotas') { actualizarKPIsCuotas(); renderReporteCuotas(); }
   if (id === 'reporte-mensual') { iniciarReporteMensual(); }
   if (id === 'cierre-mensual')  { iniciarCierreMensual(); }
@@ -8267,6 +8320,175 @@ function exportarGastos() {
   filas.push(['TOTAL DESCONTADO DEL CAPITAL','','','',fmt(totalDesc)]);
   descargarXLSX([{nombre:'Gastos Operativos',encabezados:enc,filas}],`Gastos_Operativos_TENLIO_${_hoyStr()}.xlsx`);
   mostrarToast(`✅ ${gastos.length} gastos exportados`, '#00875a');
+}
+
+// ═══════════════════════════════════════════════
+// CAPITAL DE SOCIOS (registro informativo)
+// No afecta ni se mezcla con el Capital Disponible operativo.
+// ═══════════════════════════════════════════════
+function _totalAportadoSocio(s) {
+  return (s.aportes || []).reduce((sum, a) => sum + (a.monto || 0), 0);
+}
+
+function agregarSocio() {
+  const nombreEl = document.getElementById('socio_nombre');
+  const inicialEl = document.getElementById('socio_aporteInicial');
+  const nombre = (nombreEl.value || '').trim();
+  const inicial = Number(inicialEl.value) || 0;
+
+  if (!nombre) { mostrarToast('⚠️ Escribe el nombre del socio', '#dc2626'); return; }
+  if (socios.some(s => s.nombre.toLowerCase() === nombre.toLowerCase())) {
+    mostrarToast('⚠️ Ya existe un socio con ese nombre', '#dc2626'); return;
+  }
+
+  const nuevo = { id: Date.now(), nombre, aportes: [] };
+  if (inicial > 0) {
+    nuevo.aportes.push({ id: Date.now() + 1, monto: inicial, fecha: _hoyStr(), nota: 'Aporte inicial' });
+  }
+  socios.push(nuevo);
+  nombreEl.value = ''; inicialEl.value = '';
+  guardarDatos();
+  renderSocios();
+  mostrarToast(`✅ Socio "${nombre}" registrado`, '#00875a');
+}
+
+function eliminarSocio(socioId) {
+  const s = socios.find(x => x.id === socioId);
+  if (!s) return;
+  if (!confirm(`¿Eliminar a "${s.nombre}" y todo su historial de aportes? Esta acción no se puede deshacer.`)) return;
+  socios = socios.filter(x => x.id !== socioId);
+  guardarDatos();
+  renderSocios();
+  mostrarToast('🗑️ Socio eliminado', '#64748b');
+}
+
+function abrirModalAporte(socioId) {
+  const s = socios.find(x => x.id === socioId);
+  if (!s) return;
+
+  const html = `
+    <div style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.3);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#0a1628,#1e3a5f);padding:18px 22px;">
+        <div style="color:#fff;font-size:16px;font-weight:800;">➕ Agregar Aporte</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:2px;">${s.nombre} · aportado hasta ahora: ${fmt(_totalAportadoSocio(s))}</div>
+      </div>
+      <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">Monto del aporte</label>
+          <input type="number" id="aporte_monto" placeholder="Ej: 500000" min="0"
+            style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;margin-top:4px;font-family:inherit;">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">Fecha</label>
+          <input type="date" id="aporte_fecha" value="${_hoyStr()}"
+            style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;margin-top:4px;font-family:inherit;">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">Nota (opcional)</label>
+          <input type="text" id="aporte_nota" placeholder="Ej: Refuerzo para pedido de temporada"
+            style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;margin-top:4px;font-family:inherit;">
+        </div>
+      </div>
+      <div style="padding:14px 22px;border-top:1px solid #f1f5f9;display:flex;gap:10px;justify-content:flex-end;background:#f8fafc;">
+        <button onclick="document.getElementById('dynModalAporte').remove()"
+          style="padding:9px 16px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Cancelar</button>
+        <button onclick="guardarAporte(${socioId})"
+          style="padding:9px 18px;border:none;border-radius:8px;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;">💾 Guardar Aporte</button>
+      </div>
+    </div>`;
+  _crearOverlay('dynModalAporte', html);
+}
+
+function guardarAporte(socioId) {
+  const s = socios.find(x => x.id === socioId);
+  if (!s) return;
+  const monto = Number(document.getElementById('aporte_monto').value) || 0;
+  const fecha = document.getElementById('aporte_fecha').value || _hoyStr();
+  const nota  = (document.getElementById('aporte_nota').value || '').trim();
+
+  if (monto <= 0) { mostrarToast('⚠️ El monto del aporte debe ser mayor a 0', '#dc2626'); return; }
+
+  s.aportes.push({ id: Date.now(), monto, fecha, nota });
+  guardarDatos();
+  document.getElementById('dynModalAporte').remove();
+  renderSocios();
+  mostrarToast(`✅ Aporte de ${fmt(monto)} agregado a ${s.nombre}`, '#00875a');
+}
+
+function eliminarAporte(socioId, aporteId) {
+  const s = socios.find(x => x.id === socioId);
+  if (!s) return;
+  if (!confirm('¿Eliminar este aporte del historial?')) return;
+  s.aportes = s.aportes.filter(a => a.id !== aporteId);
+  guardarDatos();
+  renderSocios();
+  mostrarToast('🗑️ Aporte eliminado', '#64748b');
+}
+
+function renderSocios() {
+  const cont = document.getElementById('socios_lista');
+  if (!cont) return;
+
+  const totalGeneral = socios.reduce((sum, s) => sum + _totalAportadoSocio(s), 0);
+  const elTotal = document.getElementById('socios_totalGeneral');
+  if (elTotal) elTotal.textContent = fmt(totalGeneral);
+
+  if (!socios.length) {
+    cont.innerHTML = `<div class="card" style="text-align:center;padding:40px 20px;color:#94a3b8;">
+      <div style="font-size:32px;margin-bottom:8px;">🤝</div>
+      Aún no has registrado ningún socio. Usa el formulario de arriba para empezar.
+    </div>`;
+    return;
+  }
+
+  cont.innerHTML = socios.map(s => {
+    const total = _totalAportadoSocio(s);
+    const aportesOrdenados = [...s.aportes].sort((a,b) => (b.fecha||'').localeCompare(a.fecha||''));
+    const filasAportes = aportesOrdenados.length ? aportesOrdenados.map(a => `
+      <tr>
+        <td style="padding:8px 10px;font-size:12.5px;color:#475569;">${a.fecha}</td>
+        <td style="padding:8px 10px;font-size:12.5px;color:#64748b;">${a.nota || '—'}</td>
+        <td style="padding:8px 10px;font-size:12.5px;font-weight:700;color:#059669;text-align:right;">${fmt(a.monto)}</td>
+        <td style="padding:8px 10px;text-align:right;">
+          <button class="btn-sm btn-outline c-red" onclick="eliminarAporte(${s.id},${a.id})">🗑️</button>
+        </td>
+      </tr>`).join('') : `<tr><td colspan="4" style="padding:14px;text-align:center;color:#94a3b8;font-size:12.5px;">Sin aportes registrados todavía</td></tr>`;
+
+    return `
+      <div class="card" style="margin-bottom:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1e3a5f);
+                        display:flex;align-items:center;justify-content:center;color:#d4af5a;font-weight:800;font-size:16px;flex-shrink:0;">
+              ${(s.nombre[0] || '?').toUpperCase()}
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:800;color:#1e293b;">${s.nombre}</div>
+              <div style="font-size:11px;color:#94a3b8;">${s.aportes.length} aporte${s.aportes.length===1?'':'s'} registrado${s.aportes.length===1?'':'s'}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="text-align:right;">
+              <div style="font-size:10.5px;color:#94a3b8;text-transform:uppercase;font-weight:700;letter-spacing:.4px;">Total Aportado</div>
+              <div style="font-size:19px;font-weight:800;color:#059669;">${fmt(total)}</div>
+            </div>
+            <button class="btn-sm" style="background:#0a1628;color:#fff;" onclick="abrirModalAporte(${s.id})">➕ Aporte</button>
+            <button class="btn-sm btn-outline c-red" onclick="eliminarSocio(${s.id})">🗑️</button>
+          </div>
+        </div>
+        <div style="border:1px solid #f1f5f9;border-radius:8px;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;">
+            <thead><tr style="background:#f8fafc;">
+              <th style="padding:8px 10px;font-size:10.5px;color:#94a3b8;text-transform:uppercase;text-align:left;">Fecha</th>
+              <th style="padding:8px 10px;font-size:10.5px;color:#94a3b8;text-transform:uppercase;text-align:left;">Nota</th>
+              <th style="padding:8px 10px;font-size:10.5px;color:#94a3b8;text-transform:uppercase;text-align:right;">Monto</th>
+              <th style="padding:8px 10px;"></th>
+            </tr></thead>
+            <tbody>${filasAportes}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 // ═══════════════════════════════════════════════
